@@ -18,4 +18,20 @@ function createDefaultTable() {
     });
 }
 
-createDefaultTable();
+// get current "people count" of a location
+function getCount(location) {
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query('SELECT * FROM data WHERE location_name=$1;', [location], function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+            for (var i = 0; i < result.rows.length; i++) {
+                console.log(JSON.stringify(result.rows[i]))
+            }
+            client.end();
+        });
+    });
+}

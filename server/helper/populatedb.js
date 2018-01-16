@@ -1,8 +1,17 @@
 var pg = require('pg');
+var format = require('pg-format');
 
 var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/josephlally";
 var client = new pg.Client(conString);
 var client2 = new pg.Client(conString);
+
+var values = [
+    [ 1, 'Rebeccas', 1, '2018-01-16 15:57:16.736741'],
+    [ 2, 'Rebeccas', 1, '2018-01-15 15:57:16.736741'],
+    [ 3, 'Rebeccas', 1, '2018-01-14 17:57:16.736741'],
+    [ 4, 'Rebeccas', 1, '2018-01-13 16:57:16.736741'],
+    [ 5, 'Marino', 1, '2018-01-11 17:57:16.736741']
+];
 
 // clear the database of any existing rows
 function clearTable() {
@@ -18,14 +27,6 @@ function clearTable() {
         });
     });
 }
-
-var format = require('pg-format');
-var values = [
-    [ 1, 'Rebeccas', 1, '2018-01-16 15:57:16.736741'],
-    [ 2, 'Rebeccas', 1, '2018-01-15 15:57:16.736741'],
-    [ 3, 'Rebeccas', 1, '2018-01-14 17:57:16.736741'],
-    [ 4, 'Rebeccas', 1, '2018-01-13 16:57:16.736741']
-];
 
 // populate the database
 function populatedb() {

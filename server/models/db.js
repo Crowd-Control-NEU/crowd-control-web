@@ -1,6 +1,7 @@
 var pg = require('pg');
+var username = require('os').userInfo().username;
 
-var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/josephlally";
+var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/" + username;
 
 // setup initial table
 function createDefaultTable() {
@@ -37,4 +38,5 @@ var getCountAtLocation = function(location, res) {
     });
 }
 
+createDefaultTable();
 module.exports.getCountAtLocation = getCountAtLocation;

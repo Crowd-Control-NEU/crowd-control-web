@@ -1,7 +1,8 @@
 var pg = require('pg');
 var format = require('pg-format');
+var username = require('os').userInfo().username;
 
-var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/josephlally";
+var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/" + username;
 var client = new pg.Client(conString);
 var client2 = new pg.Client(conString);
 

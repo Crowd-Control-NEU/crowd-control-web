@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 // components
 import Header from './components/header/header';
-import HomePage from './components/pages/home';
-import AboutPage from './components/pages/about';
+import Home from './components/pages/home';
+import About from './components/pages/about';
+import Location from './components/pages/location';
 
 class App extends Component {
   render() {
@@ -12,8 +13,9 @@ class App extends Component {
       <Router>
         <div className="App">
           <Header />
-          <Route exact path='/' component={HomePage} />
-          <Route exact path='/About' component={AboutPage} />
+          <Route exact path='/' component={Home} />
+          <Route exact path='/About' component={About} />
+          <Route exact path='/Location/:name' component={Location} />
         </div>
       </Router>
     );

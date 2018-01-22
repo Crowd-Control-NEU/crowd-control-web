@@ -1,12 +1,11 @@
 const express = require('express');
 const app = express();
+var db = require('./models/db');
 
 var bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-var db = require('./models/db');
 
 // a test api call
 app.get('/api/test', (req, res) => {
@@ -18,14 +17,14 @@ app.get('/count/:location', (req, res) => {
     db.getCountAtLocation(req.params.location, res);
 });
 
-// add a
+// add a entry to the data table
 app.post('/data-add', (req, res) => {
     var id = req.body.id;
     var location_name = req.body.location_name;
     var count = req.body.count;
     var date = req.body.date;
     console.log("Received: " + id, location_name, count, date);
-    res.send("yes");
+    db.addDataEntry(id, location_name, count, date, res)
 });
 
 const PORT = process.env.PORT || 5000;

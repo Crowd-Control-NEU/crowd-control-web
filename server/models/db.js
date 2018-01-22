@@ -38,5 +38,24 @@ var getCountAtLocation = function(location, res) {
     });
 }
 
+var addDataEntry = function(id, location_name, count, date, res) {
+    var client = new pg.Client(conString);
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query('INSERT INTO data (id, location_name, count, date) VALUES ($1, $2, $3, $4)', [id, location_name, count, date], function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+            else {
+                res.send("added entry to data table");
+            }
+            client.end();
+        });
+    });
+}
+
 createDefaultTable();
 module.exports.getCountAtLocation = getCountAtLocation;
+module.exports.addDataEntry = addDataEntry;

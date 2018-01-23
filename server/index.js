@@ -27,5 +27,11 @@ app.post('/data-add', (req, res) => {
     db.addDataEntry(id, location_name, count, date, res)
 });
 
+app.post('/increment', async (req, res) => {
+    var count = await db.incrementCount(req.body.location_name, res);
+    return count
+
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

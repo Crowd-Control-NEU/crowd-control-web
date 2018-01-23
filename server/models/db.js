@@ -10,9 +10,18 @@ function createDefaultTable() {
         if(err) {
             return console.error('could not connect to postgres', err);
         }
-        client.query('CREATE TABLE IF NOT EXISTS data (id integer NOT NULL, location_name varchar(100), count integer, date TIMESTAMP); ', function(err, result) {
+        var historyTableQuery = 'CREATE TABLE IF NOT EXISTS historical_data (id integer NOT NULL,\
+                                    location_name varchar(100), count integer, date TIMESTAMP);';
+        var liveDataTableQuery = 'CREATE TABLE IF NOT EXISTS live_data (location_id integer NOT NULL,\
+                                    location_name varchar(100), count integer);';
+        client.query(historyTableQuery, function(err, result) {
             if(err) {
                 return console.error('error running query', err);
+                }
+            });
+        client.query(liveDataTableQuery, function(err, result){
+            if (err){
+                return console.error('error running query' , err);
             }
             client.end();
         });
@@ -56,6 +65,35 @@ var addDataEntry = function(id, location_name, count, date, res) {
     });
 }
 
+//Function arguments are location name and response
+function incrementCount(location_name, res){
+    return new Promise((resolve, reject) =>{
+            var client = new pg.Client(conString);
+            client.connect(function(err){
+                if(err){
+                    return reject(err);
+                }
+                //increments count on location
+                client.query("UPDATE live_data SET count = count + 1 WHERE location_name=" +"'" + location_name + "'", function(err,result){
+                    if(err){
+                        return reject(err);
+                    }
+            });
+            client.query("SELECT count FROM live_data WHERE location_name=" +"'" + location_name + "'", function(err,result){
+                if(err){
+                    return reject(err);
+                }
+                else{
+                    console.log('going to return result');
+                    return resolve(result.rows[0]);
+                }
+                client.end();
+            });
+            })
+   });
+}
+
 createDefaultTable();
 module.exports.getCountAtLocation = getCountAtLocation;
 module.exports.addDataEntry = addDataEntry;
+module.exports.incrementCount = incrementCount;

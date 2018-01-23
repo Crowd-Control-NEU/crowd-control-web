@@ -12,4 +12,4 @@ Local Setup:
 - from the root directory of project, `yarn dev` to start both the react buildpack server and the node.js server
 - go to localhost:3000 to see the React App
 
--Slack Integration Test 
+-Slack Integration Test

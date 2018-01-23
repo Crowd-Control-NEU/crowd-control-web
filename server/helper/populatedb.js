@@ -43,7 +43,7 @@ function populateHistoricalData() {
         if(err) {
             return console.error('error running query', err);
         }
-        client2.end();
+        client.end();
     });
 }
 function populateLiveData() {

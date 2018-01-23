@@ -25,7 +25,7 @@ app.post('/data-add', async (req, res) => {
     var date = req.body.date;
     console.log("Received: " + id, location_name, count, date);
     var updatedCount = await db.addDataEntry(id, location_name, count, date, res)
-    return updatedCount;
+    res.send(updatedCount);
 });
 
 

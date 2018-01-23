@@ -11,3 +11,5 @@ Local Setup:
 - from root directory of project, `node server/helper/populatedb.js` to clear any preexisting rows in the table and populate the table with a few rows of dummy data
 - from the root directory of project, `yarn dev` to start both the react buildpack server and the node.js server
 - go to localhost:3000 to see the React App
+
+-Slack Integration Test 

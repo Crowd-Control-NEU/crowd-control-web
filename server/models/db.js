@@ -29,7 +29,7 @@ function createDefaultTable() {
 }
 
 // get current "people count" of a location
-var getCountAtLocation = function(location, res) {
+function getCountAtLocation(location, res) {
     var client = new pg.Client(conString);
     client.connect(function(err) {
         if(err) {
@@ -47,26 +47,32 @@ var getCountAtLocation = function(location, res) {
     });
 }
 
-var addDataEntry = function(id, location_name, count, date, res) {
-    var client = new pg.Client(conString);
-    client.connect(function(err) {
-        if(err) {
-            return console.error('could not connect to postgres', err);
-        }
-        client.query('INSERT INTO data (id, location_name, count, date) VALUES ($1, $2, $3, $4)', [id, location_name, count, date], function(err, result) {
+function addDataEntry(id, location_name, count, date, res) {
+    return new Promise(async (resolve, reject) => {
+        var client = new pg.Client(conString);
+        client.connect(function(err) {
             if(err) {
-                return console.error('error running query', err);
+                return console.error('could not connect to postgres', err);
             }
-            else {
-                res.send("added entry to data table");
-            }
-            client.end();
+            client.query('INSERT INTO historical_data (id, location_name, count, date) VALUES ($1, $2, $3, $4)', [id, location_name, count, date], function(err, result) {
+                if(err) {
+                    return console.error('error running query', err);
+                }
+                else {
+                    res.send("added entry to data table");
+                }
+                client.end();
+            });
         });
+        var updatedCount = await incrementCount(location_name, count);
+        return resolve(updatedCount);
     });
+  
 }
 
 //Function arguments are location name and response
-function incrementCount(location_name, res){
+function incrementCount(location_name, count){
+    incrementQuery = "UPDATE live_data SET count = count +" + count + "WHERE location_name=" +"'" + location_name + "'"; 
     return new Promise((resolve, reject) =>{
             var client = new pg.Client(conString);
             client.connect(function(err){
@@ -74,7 +80,7 @@ function incrementCount(location_name, res){
                     return reject(err);
                 }
                 //increments count on location
-                client.query("UPDATE live_data SET count = count + 1 WHERE location_name=" +"'" + location_name + "'", function(err,result){
+                client.query(incrementQuery, function(err,result){
                     if(err){
                         return reject(err);
                     }

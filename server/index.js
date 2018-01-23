@@ -18,20 +18,16 @@ app.get('/count/:location', (req, res) => {
 });
 
 // add a entry to the data table
-app.post('/data-add', (req, res) => {
+app.post('/data-add', async (req, res) => {
     var id = req.body.id;
     var location_name = req.body.location_name;
     var count = req.body.count;
     var date = req.body.date;
     console.log("Received: " + id, location_name, count, date);
-    db.addDataEntry(id, location_name, count, date, res)
+    var updatedCount = await db.addDataEntry(id, location_name, count, date, res)
+    return updatedCount;
 });
 
-app.post('/increment', async (req, res) => {
-    var count = await db.incrementCount(req.body.location_name, res);
-    return count
-
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

@@ -1,4 +1,3 @@
-// var db = require('../models/db')
 var username = require('os').userInfo().username;
 var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/" + username;
 var pg = require('knex')({

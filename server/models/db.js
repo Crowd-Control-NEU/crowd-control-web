@@ -1,101 +1,82 @@
-var pg = require('pg');
 var username = require('os').userInfo().username;
-
 var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/" + username;
 
 // setup initial table
-function createDefaultTable() {
-    var client = new pg.Client(conString);
-    client.connect(function(err) {
-        if(err) {
-            return console.error('could not connect to postgres', err);
-        }
-        var historyTableQuery = 'CREATE TABLE IF NOT EXISTS historical_data (id integer NOT NULL,\
-                                    location_name varchar(100), count integer, date TIMESTAMP);';
-        var liveDataTableQuery = 'CREATE TABLE IF NOT EXISTS live_data (location_id integer NOT NULL,\
-                                    location_name varchar(100), count integer);';
-        client.query(historyTableQuery, function(err, result) {
-            if(err) {
-                return console.error('error running query', err);
-                }
-            });
-        client.query(liveDataTableQuery, function(err, result){
-            if (err){
-                return console.error('error running query' , err);
-            }
-            client.end();
-        });
+function createDefaultTable(){
+    var pg = require('knex')({
+        client: 'pg',
+        connection: conString,
+        searchPath: ['knex', 'public']
     });
+    pg.schema.withSchema('public').createTableIfNotExists('historical_data', function(table){
+        table.increments('id');
+        table.string('location_name', 100);
+        table.integer('count');
+        table.timestamp('date');
+    })
+    .createTableIfNotExists('live_data', function(table){
+          table.increments('id');
+          table.string('location_name', 100);
+          table.integer('count');
+     }).then().catch(function(e) {
+        console.error(e);
+      }).finally(function() {
+        pg.destroy();
+      })
 }
 
+
 // get current "people count" of a location
-function getCountAtLocation(location, res) {
-    var client = new pg.Client(conString);
-    client.connect(function(err) {
-        if(err) {
-            return console.error('could not connect to postgres', err);
-        }
-        client.query('SELECT SUM(count) FROM data WHERE location_name=$1;', [location], function(err, result) {
-            if(err) {
-                return console.error('error running query', err);
-            }
-            else {
-                res.send(result.rows);
-            }
-            client.end();
-        });
+function getCountAtLocation(location_name, res) {
+    var pg = require('knex')({
+        client: 'pg',
+        connection: conString,
+        searchPath: ['knex', 'public']
+    });
+    console.log("location_name is ", location_name);
+    return new Promise(async (resolve, reject) => {
+        var count = pg('live_data').select('count').where('location_name', '=', location_name)
+        .then()
+        .catch(function(e){
+            reject(e);
+        })
+        return resolve(count);
     });
 }
 
 function addDataEntry(id, location_name, count, date, res) {
+    var pg = require('knex')({
+        client: 'pg',
+        connection: conString,
+        searchPath: ['knex', 'public']
+    });
     return new Promise(async (resolve, reject) => {
-        var client = new pg.Client(conString);
-        client.connect(function(err) {
-            if(err) {
-                return console.error('could not connect to postgres', err);
-            }
-            client.query('INSERT INTO historical_data (id, location_name, count, date) VALUES ($1, $2, $3, $4)', [id, location_name, count, date], function(err, result) {
-                if(err) {
-                    return console.error('error running query', err);
-                }
-                else {
-                    res.send("added entry to data table");
-                }
-                client.end();
-            });
-        });
+        pg('historical_data').insert({'id': id, 'location_name':location_name, 'count': count, 'date':date})
+        .then()
+        .catch(function(e){
+            console.log(e);
+        })
         var updatedCount = await incrementCount(location_name, count);
-        return resolve(updatedCount);
+        return resolve({'count':updatedCount[0]});
     });
   
 }
 
 //Function arguments are location name and response
 function incrementCount(location_name, count){
-    incrementQuery = "UPDATE live_data SET count = count +" + count + "WHERE location_name=" +"'" + location_name + "'"; 
+    var pg = require('knex')({
+        client: 'pg',
+        connection: conString,
+        searchPath: ['knex', 'public']
+    });
     return new Promise((resolve, reject) =>{
-            var client = new pg.Client(conString);
-            client.connect(function(err){
-                if(err){
-                    return reject(err);
-                }
-                //increments count on location
-                client.query(incrementQuery, function(err,result){
-                    if(err){
-                        return reject(err);
-                    }
+            var res = pg('live_data')
+            .returning('count')
+            .where('location_name', '=', location_name)
+            .increment('count', count).then().catch(function(e){
+                console.log(e);
             });
-            client.query("SELECT count FROM live_data WHERE location_name=" +"'" + location_name + "'", function(err,result){
-                if(err){
-                    return reject(err);
-                }
-                else{
-                    console.log('going to return result');
-                    return resolve(result.rows[0]);
-                }
-                client.end();
-            });
-            })
+            return resolve(res);
    });
 }
 

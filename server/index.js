@@ -13,8 +13,9 @@ app.get('/api/test', (req, res) => {
 });
 
 // get the count at a certain location (for example, /count/Marino)
-app.get('/count/:location', (req, res) => {
-    db.getCountAtLocation(req.params.location, res);
+app.get('/count/:location', async (req, res) => {
+    var count = await db.getCountAtLocation(req.params.location, res).then();
+    res.send(count);
 });
 
 // add a entry to the data table

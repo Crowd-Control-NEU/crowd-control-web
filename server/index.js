@@ -7,6 +7,12 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const PORT = process.env.PORT || 5000;
+var server = app.listen(PORT);
+
+// Socket.io
+var io = require('socket.io').listen(server);
+
 // a test api call
 app.get('/api/test', (req, res) => {
     res.send({ express: 'Hello From Node.js' });
@@ -25,10 +31,7 @@ app.post('/data-add', async (req, res) => {
     var count = req.body.count;
     var date = req.body.date;
     console.log("Received: " + id, location_name, count, date);
-    var updatedCount = await db.addDataEntry(id, location_name, count, date, res)
-    res.send(updatedCount);
+    var result = await db.addDataEntry(id, location_name, count, date, res);
+    io.sockets.emit('refresh', result.count);
+    res.send(result);
 });
-
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT);

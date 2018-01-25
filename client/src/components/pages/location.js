@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import socketIOClient from 'socket.io-client';
 
 class Location extends Component {
   state = {
     count: 0,
-    name: this.props.match.params.name[0].toUpperCase() + this.props.match.params.name.slice(1)
+    name: this.props.match.params.name[0].toUpperCase() + this.props.match.params.name.slice(1),
+    endpoint: 'http://localhost:5000'
   };
 
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({ count: res[0].sum }))
+      .then(res => this.setState({ count: res[0].count }))
       .catch(err => console.log(err));
   }
 
@@ -22,6 +24,12 @@ class Location extends Component {
   };
 
   render() {
+    const socket = socketIOClient(this.state.endpoint);
+
+    socket.on('refresh', newCount => {
+      this.setState({ count: newCount });
+    });
+
     return (
       <div className="container">
         <h1>{this.state.name}</h1>

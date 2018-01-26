@@ -4,7 +4,7 @@ import socketIOClient from 'socket.io-client';
 class Location extends Component {
   state = {
     count: 0,
-    name: this.props.match.params.name[0].toUpperCase() + this.props.match.params.name.slice(1),
+    name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000'
   };
 
@@ -12,6 +12,16 @@ class Location extends Component {
     this.callApi()
       .then(res => this.setState({ count: res[0].count }))
       .catch(err => console.log(err));
+  }
+
+  capitalize(name) {
+    var parts = name.split(" ");
+    var result = [];
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      result.push(part[0].toUpperCase() + part.slice(1));
+    }
+    return result.join(" ");
   }
 
   callApi = async () => {

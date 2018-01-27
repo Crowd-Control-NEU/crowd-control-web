@@ -24,6 +24,12 @@ app.get('/count/:location', async (req, res) => {
     res.send(count);
 });
 
+// get the list of locations
+app.get('/locations', async (req, res) => {
+    var locations = await db.getLocations().then();
+    res.send({list: locations});
+});
+
 // add a entry to the data table
 app.post('/data-add', async (req, res) => {
     var id = req.body.id;

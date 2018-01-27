@@ -44,6 +44,23 @@ function getCountAtLocation(location_name, res) {
     });
 }
 
+// get current list of all locations
+function getLocations() {
+    var pg = require('knex')({
+        client: 'pg',
+        connection: conString,
+        searchPath: ['knex', 'public']
+    });
+    return new Promise(async (resolve, reject) => {
+        var locations = pg('live_data').select('location_name')
+        .then()
+        .catch(function(e){
+            reject(e);
+        })
+        return resolve(locations);
+    });
+}
+
 function addDataEntry(id, location_name, count, date, res) {
     var pg = require('knex')({
         client: 'pg',
@@ -82,5 +99,6 @@ function incrementCount(location_name, count){
 
 createDefaultTable();
 module.exports.getCountAtLocation = getCountAtLocation;
+module.exports.getLocations = getLocations;
 module.exports.addDataEntry = addDataEntry;
 module.exports.incrementCount = incrementCount;

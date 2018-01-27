@@ -6,6 +6,7 @@ import Header from './components/header/header';
 import Home from './components/pages/home';
 import About from './components/pages/about';
 import Location from './components/pages/location';
+import LocationsList from './components/pages/locationslist';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           <Route exact path='/' component={Home} />
           <Route exact path='/About' component={About} />
           <Route exact path='/Location/:name' component={Location} />
+          <Route exact path='/LocationsList' component={LocationsList} />
         </div>
       </Router>
     );

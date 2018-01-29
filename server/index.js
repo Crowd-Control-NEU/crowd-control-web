@@ -25,7 +25,7 @@ app.get('/count/:location', async (req, res) => {
 });
 
 // get the list of locations
-app.get('/locations', async (req, res) => {
+app.get('/locations-list', async (req, res) => {
     var locations = await db.getLocations().then();
     res.send({list: locations});
 });

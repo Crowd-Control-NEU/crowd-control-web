@@ -4,7 +4,7 @@ class LocationsList extends Component {
   state = {
         locations: []
   };
-  
+
   componentDidMount() {
     this.callApi()
       .then(res => this.setState({ locations: res.list }))
@@ -12,7 +12,7 @@ class LocationsList extends Component {
   }
 
   callApi = async () => {
-    const response = await fetch('/locations');
+    const response = await fetch('/locations-list');
     const body = await response.json();
 
     if (response.status !== 200) throw Error(body.message);

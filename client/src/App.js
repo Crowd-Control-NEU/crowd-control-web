@@ -16,8 +16,8 @@ class App extends Component {
           <Header />
           <Route exact path='/' component={Home} />
           <Route exact path='/About' component={About} />
-          <Route exact path='/Location/:name' component={Location} />
-          <Route exact path='/LocationsList' component={LocationsList} />
+          <Route exact path='/Locations' component={LocationsList} />
+          <Route exact path='/Locations/:name' component={Location} />
         </div>
       </Router>
     );

@@ -18,10 +18,10 @@ class Header extends Component {
             <LinkContainer exact to="/">
               <NavItem>Home</NavItem>
             </LinkContainer>
-            <LinkContainer exact to="/Locations">
+            <LinkContainer exact to="/locations">
               <NavItem>Explore</NavItem>
             </LinkContainer>
-            <LinkContainer exact to="/About">
+            <LinkContainer exact to="/about">
               <NavItem>About</NavItem>
             </LinkContainer>
           </Nav>

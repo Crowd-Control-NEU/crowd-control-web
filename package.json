@@ -1,0 +1,33 @@
+{
+  "name": "crowd-control-web",
+  "version": "1.0.0",
+  "description": "[![Stories in Ready](https://badge.waffle.io/Crowd-Control-NEU/crowd-control-web.svg?label=ready&title=Ready)](http://waffle.io/Crowd-Control-NEU/crowd-control-web)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "server": "nodemon server/index.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VicLiang621/crowd-control-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VicLiang621/crowd-control-web/issues"
+  },
+  "homepage": "https://github.com/VicLiang621/crowd-control-web#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2",
+    "knex": "^0.14.2",
+    "nodemon": "^1.14.11",
+    "pg": "7.4.1",
+    "pg-format": "^1.0.4",
+    "socket.io": "^2.0.4"
+  }
+}

@@ -1,13 +1,20 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 var db = require('./models/db');
 
 var bodyParser = require("body-parser");
+const PORT = process.env.PORT || 5000;
+
+// Express only serves static assets in production
+if (true) {
+    // Serve static files from the React app
+    app.use(express.static('./../client/build'));
+  }
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 5000;
 var server = app.listen(PORT);
 
 // Socket.io
@@ -41,3 +48,8 @@ app.post('/data-add', async (req, res) => {
     io.sockets.emit('refresh', result.count);
     res.send(result);
 });
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'./../client/build/index.html'));
+  });
+  

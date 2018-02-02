@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 // Express only serves static assets in production
 if (true) {
     // Serve static files from the React app
-    app.use(express.static('./../client/build'));
+    app.use(express.static('client/build'));
   }
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -50,6 +50,6 @@ app.post('/data-add', async (req, res) => {
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'./../client/build/index.html'));
+    res.sendFile(path.join(__dirname+'client/build/index.html'));
   });
   

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 var db = require('./models/db');
+var socketio = require('socket.io')
 
 var bodyParser = require("body-parser");
 const PORT = process.env.PORT || 5000;
@@ -38,7 +39,13 @@ app.use(bodyParser.json());
 var server = app.listen(PORT);
 
 // Socket.io
-var io = require('socket.io').listen(server);
+const io = socketio(server);
+
+io.on('connection', (socket) => {
+    console.log('Client connected');
+    socket.on('disconnect', () => console.log('Client disconnected'));
+  });
+
 
 // a test api call
 app.get('/api/test', (req, res) => {

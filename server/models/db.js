@@ -6,7 +6,11 @@ function createDefaultTable(){
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
-        searchPath: ['knex', 'public']
+        searchPath: ['knex', 'public'],
+        pool : {
+            min: 1,
+            max:3
+        }
     });
     pg.schema.withSchema('public').createTableIfNotExists('historical_data', function(table){
         table.increments('id');
@@ -31,7 +35,11 @@ function getCountAtLocation(location_name) {
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
-        searchPath: ['knex', 'public']
+        searchPath: ['knex', 'public'],
+        pool : {
+            min: 1,
+            max:3
+        }
     });
     return new Promise(async (resolve, reject) => {
         var count = pg('live_data').select('count').where('location_name', '=', location_name)
@@ -48,7 +56,11 @@ function getHistoricalForLocation(location_name) {
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
-        searchPath: ['knex', 'public']
+        searchPath: ['knex', 'public'],
+        pool : {
+            min: 1,
+            max:3
+        }
     });
     return new Promise(async (resolve, reject) => {
         var historical = pg('historical_data').select().where('location_name', '=', location_name)
@@ -65,7 +77,11 @@ function getLocations() {
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
-        searchPath: ['knex', 'public']
+        searchPath: ['knex', 'public'],
+        pool : {
+            min: 1,
+            max:3
+        }
     });
     return new Promise(async (resolve, reject) => {
         var locations = pg('live_data').select('location_name')
@@ -81,7 +97,11 @@ function addDataEntry(location_name, count, date) {
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
-        searchPath: ['knex', 'public']
+        searchPath: ['knex', 'public'],
+        pool : {
+            min: 1,
+            max:3
+        }
     });
     return new Promise(async (resolve, reject) => {
         pg('historical_data').insert({'location_name':location_name, 'count': count, 'date':date})
@@ -100,7 +120,11 @@ function incrementCount(location_name, count){
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
-        searchPath: ['knex', 'public']
+        searchPath: ['knex', 'public'],
+        pool : {
+            min: 1,
+            max:3
+        }
     });
     return new Promise((resolve, reject) =>{
             var res = pg('live_data')

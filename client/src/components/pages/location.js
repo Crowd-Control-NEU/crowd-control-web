@@ -34,7 +34,7 @@ class Location extends Component {
   };
 
   render() {
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = socketIOClient();
 
     socket.on('refresh', newCount => {
       this.setState({ count: newCount });

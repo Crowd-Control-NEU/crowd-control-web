@@ -61,14 +61,14 @@ function getLocations() {
     });
 }
 
-function addDataEntry(id, location_name, count, date, res) {
+function addDataEntry(location_name, count, date) {
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
         searchPath: ['knex', 'public']
     });
     return new Promise(async (resolve, reject) => {
-        pg('historical_data').insert({'id': id, 'location_name':location_name, 'count': count, 'date':date})
+        pg('historical_data').insert({'location_name':location_name, 'count': count, 'date':date})
         .then()
         .catch(function(e){
             console.log(e);

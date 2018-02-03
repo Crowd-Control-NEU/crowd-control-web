@@ -27,7 +27,9 @@ app.get('/api/test', (req, res) => {
 
 // get the count at a certain location (for example, /count/Marino)
 app.get('/count/:location', async (req, res) => {
-    var count = await db.getCountAtLocation(req.params.location, res).then();
+    var count = await db.getCountAtLocation(req.params.location).then();
+    var historical = await db.getHistoricalForLocation(req.params.location).then();
+    count[0]['historical'] = historical;
     res.send(count);
 });
 

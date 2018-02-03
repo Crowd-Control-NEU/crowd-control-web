@@ -27,7 +27,9 @@ app.get('/api/test', (req, res) => {
 
 // get the count at a certain location (for example, /count/Marino)
 app.get('/count/:location', async (req, res) => {
-    var count = await db.getCountAtLocation(req.params.location, res).then();
+    var count = await db.getCountAtLocation(req.params.location).then();
+    var historical = await db.getHistoricalForLocation(req.params.location).then();
+    count[0]['historical'] = historical;
     res.send(count);
 });
 
@@ -39,12 +41,12 @@ app.get('/locations-list', async (req, res) => {
 
 // add a entry to the data table
 app.post('/data-add', async (req, res) => {
-    var id = req.body.id;
+    console.log("received /data-add POST request");
     var location_name = req.body.location_name;
     var count = req.body.count;
     var date = req.body.date;
-    console.log("Received: " + id, location_name, count, date);
-    var result = await db.addDataEntry(id, location_name, count, date, res);
+    console.log("Received: " + location_name, count, date);
+    var result = await db.addDataEntry(location_name, count, date);
     io.sockets.emit('refresh', result.count);
     res.send(result);
 });

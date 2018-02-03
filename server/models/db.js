@@ -27,13 +27,12 @@ function createDefaultTable(){
 
 
 // get current "people count" of a location
-function getCountAtLocation(location_name, res) {
+function getCountAtLocation(location_name) {
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
         searchPath: ['knex', 'public']
     });
-    console.log("location_name is ", location_name);
     return new Promise(async (resolve, reject) => {
         var count = pg('live_data').select('count').where('location_name', '=', location_name)
         .then()
@@ -41,6 +40,23 @@ function getCountAtLocation(location_name, res) {
             reject(e);
         })
         return resolve(count);
+    });
+}
+
+// get historical data for a location
+function getHistoricalForLocation(location_name) {
+    var pg = require('knex')({
+        client: 'pg',
+        connection: conString,
+        searchPath: ['knex', 'public']
+    });
+    return new Promise(async (resolve, reject) => {
+        var historical = pg('historical_data').select().where('location_name', '=', location_name)
+        .then()
+        .catch(function(e){
+            reject(e);
+        })
+        return resolve(historical);
     });
 }
 
@@ -61,14 +77,14 @@ function getLocations() {
     });
 }
 
-function addDataEntry(id, location_name, count, date, res) {
+function addDataEntry(location_name, count, date) {
     var pg = require('knex')({
         client: 'pg',
         connection: conString,
         searchPath: ['knex', 'public']
     });
     return new Promise(async (resolve, reject) => {
-        pg('historical_data').insert({'id': id, 'location_name':location_name, 'count': count, 'date':date})
+        pg('historical_data').insert({'location_name':location_name, 'count': count, 'date':date})
         .then()
         .catch(function(e){
             console.log(e);
@@ -76,7 +92,7 @@ function addDataEntry(id, location_name, count, date, res) {
         var updatedCount = await incrementCount(location_name, count);
         return resolve({'count':updatedCount[0]});
     });
-  
+
 }
 
 //Function arguments are location name and response
@@ -99,6 +115,7 @@ function incrementCount(location_name, count){
 
 createDefaultTable();
 module.exports.getCountAtLocation = getCountAtLocation;
+module.exports.getHistoricalForLocation = getHistoricalForLocation;
 module.exports.getLocations = getLocations;
 module.exports.addDataEntry = addDataEntry;
 module.exports.incrementCount = incrementCount;

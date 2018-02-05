@@ -62,7 +62,7 @@ app.get('/count/:location', async (req, res) => {
 
 // get the list of locations
 app.get('/locations-list', async (req, res) => {
-    var locations = await db.getLocations().then();
+    var locations = await db.getLocations();
     res.send({list: locations});
 });
 
@@ -72,10 +72,24 @@ app.post('/data-add', async (req, res) => {
     var location_name = req.body.location_name;
     var count = req.body.count;
     var date = req.body.date;
-    console.log("Received: " + location_name, count, date);
-    var result = await db.addDataEntry(location_name, count, date);
-    io.sockets.emit('refresh', result.count);
-    res.send(result);
+    
+    var locations = await db.getLocations();
+    var location_is_registered = false;
+    for(var i = 0; i < locations.length; i++) {
+        if (locations[i].location_name == location_name) {
+            location_is_registered = true;
+            break;
+        }
+    }
+
+    if (location_is_registered) {
+        var result = await db.addDataEntry(location_name, count, date);
+        io.sockets.emit('refresh', result.count);
+        res.send(result);
+    }
+    else {
+        res.send("Data Entry Refused: The location " + location_name + " is not registed.")
+    }
 });
 
 app.get('*', (req, res) => {

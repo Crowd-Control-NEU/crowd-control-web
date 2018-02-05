@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 class LocationsList extends Component {
   state = {
@@ -23,7 +24,7 @@ class LocationsList extends Component {
 
   render() {
     var data = this.state.locations;
-    const listItems = data.map((d) => <li>{d.location_name}</li>);
+    const listItems = data.map((d) => <li><Link to={'locations/' + d.location_name} > {d.location_name} </Link></li>);
 
     return (
       <div className="container">

@@ -15,8 +15,6 @@ function createDefaultTable(){
           table.integer('count');
      }).then().catch(function(e) {
         console.error(e);
-      }).finally(function() {
-        knex.destroy();
       })
 }
 
@@ -48,6 +46,7 @@ function getHistoricalForLocation(location_name) {
 // get current list of all locations
 function getLocations() {
     return new Promise(async (resolve, reject) => {
+        console.log(knex.connection)
         var locations = knex('live_data').select('location_name')
         .then()
         .catch(function(e){

@@ -1,18 +1,9 @@
-var username = require('os').userInfo().username;
-var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/" + username;
+var knex = require('./knexfile');
 
 // setup initial table
 function createDefaultTable(){
-    var pg = require('knex')({
-        client: 'pg',
-        connection: conString,
-        searchPath: ['knex', 'public'],
-        pool : {
-            min: 1,
-            max:3
-        }
-    });
-    pg.schema.withSchema('public').createTableIfNotExists('historical_data', function(table){
+
+    knex.schema.withSchema('public').createTableIfNotExists('historical_data', function(table){
         table.increments('id');
         table.string('location_name', 100);
         table.integer('count');
@@ -25,24 +16,15 @@ function createDefaultTable(){
      }).then().catch(function(e) {
         console.error(e);
       }).finally(function() {
-        pg.destroy();
+        knex.destroy();
       })
 }
 
 
 // get current "people count" of a location
 function getCountAtLocation(location_name) {
-    var pg = require('knex')({
-        client: 'pg',
-        connection: conString,
-        searchPath: ['knex', 'public'],
-        pool : {
-            min: 1,
-            max:3
-        }
-    });
     return new Promise(async (resolve, reject) => {
-        var count = pg('live_data').select('count').where('location_name', '=', location_name)
+        var count = knex('live_data').select('count').where('location_name', '=', location_name)
         .then()
         .catch(function(e){
             reject(e);
@@ -53,17 +35,8 @@ function getCountAtLocation(location_name) {
 
 // get historical data for a location
 function getHistoricalForLocation(location_name) {
-    var pg = require('knex')({
-        client: 'pg',
-        connection: conString,
-        searchPath: ['knex', 'public'],
-        pool : {
-            min: 1,
-            max:3
-        }
-    });
     return new Promise(async (resolve, reject) => {
-        var historical = pg('historical_data').select().where('location_name', '=', location_name)
+        var historical = knex('historical_data').select().where('location_name', '=', location_name)
         .then()
         .catch(function(e){
             reject(e);
@@ -74,17 +47,8 @@ function getHistoricalForLocation(location_name) {
 
 // get current list of all locations
 function getLocations() {
-    var pg = require('knex')({
-        client: 'pg',
-        connection: conString,
-        searchPath: ['knex', 'public'],
-        pool : {
-            min: 1,
-            max:3
-        }
-    });
     return new Promise(async (resolve, reject) => {
-        var locations = pg('live_data').select('location_name')
+        var locations = knex('live_data').select('location_name')
         .then()
         .catch(function(e){
             reject(e);
@@ -94,17 +58,8 @@ function getLocations() {
 }
 
 function addDataEntry(location_name, count, date) {
-    var pg = require('knex')({
-        client: 'pg',
-        connection: conString,
-        searchPath: ['knex', 'public'],
-        pool : {
-            min: 1,
-            max:3
-        }
-    });
     return new Promise(async (resolve, reject) => {
-        pg('historical_data').insert({'location_name':location_name, 'count': count, 'date':date})
+        knex('historical_data').insert({'location_name':location_name, 'count': count, 'date':date})
         .then()
         .catch(function(e){
             console.log(e);
@@ -117,17 +72,8 @@ function addDataEntry(location_name, count, date) {
 
 //Function arguments are location name and response
 function incrementCount(location_name, count){
-    var pg = require('knex')({
-        client: 'pg',
-        connection: conString,
-        searchPath: ['knex', 'public'],
-        pool : {
-            min: 1,
-            max:3
-        }
-    });
     return new Promise((resolve, reject) =>{
-            var res = pg('live_data')
+            var res = knex('live_data')
             .returning('count')
             .where('location_name', '=', location_name)
             .increment('count', count).then().catch(function(e){

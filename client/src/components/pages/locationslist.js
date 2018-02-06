@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 
 class LocationsList extends Component {
   state = {
-        locations: []
+        locations: [],
+        search: ""
   };
 
   componentDidMount() {
@@ -21,14 +22,24 @@ class LocationsList extends Component {
     return body;
   };
 
+  updateSearch(event) {
+    this.setState({search: event.target.value})
+  }
 
   render() {
     var data = this.state.locations;
-    const listItems = data.map((d) => <li><Link to={'locations/' + d.location_name} > {d.location_name} </Link></li>);
+    let filteredLocations = data.filter(
+      (location) => {
+        return location.location_name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+      }
+    )
+    const listItems = filteredLocations.map((d) => <li><Link to={'locations/' + d.location_name} > {d.location_name} </Link></li>);
 
     return (
       <div className="container">
         <h1>Locations List</h1>
+        <input type="text" value={this.state.search} onChange={this.updateSearch.bind(this)}/>
+        <br></br>
         {listItems}
       </div>
     );

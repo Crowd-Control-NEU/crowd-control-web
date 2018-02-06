@@ -17,7 +17,8 @@ var sampleHistoricalData = [
 
 var sampleLiveData = [
     {'location_name':'Rebeccas', 'count':25},
-    {'location_name':'Curry Student Center', 'count':100}
+    {'location_name':'Curry Student Center', 'count':100},
+    {'location_name':'Snell', 'count':60}
 ];
 
 // clear the database of any existing rows
@@ -29,6 +30,10 @@ function clearTable() {
 
 // populate the database
 function populateHistoricalData() {
+    for (var i = 0; i < 60; i++) {
+      var newData = {'location_name':'Snell', 'count': 1, 'date':'2018-02-01 07:' + i + ':00'};
+      sampleHistoricalData.push(newData);
+    }
     pg('historical_data').insert(sampleHistoricalData).then()
 }
 function populateLiveData() {

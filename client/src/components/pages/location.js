@@ -4,13 +4,17 @@ import socketIOClient from 'socket.io-client';
 class Location extends Component {
   state = {
     count: 0,
+    historical: [],
     name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000'
   };
 
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({ count: res[0].count }))
+      .then(res => this.setState({
+        count: res[0].count,
+        historical: res[0].historical
+      }))
       .catch(err => console.log(err));
   }
 

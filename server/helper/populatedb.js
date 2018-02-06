@@ -31,7 +31,8 @@ function clearTable() {
 // populate the database
 function populateHistoricalData() {
     for (var i = 0; i < 60; i++) {
-      var newData = {'location_name':'Snell', 'count': 1, 'date':'2018-02-01 07:' + i + ':00'};
+      var count = Math.floor(Math.random() * 3);
+      var newData = {'location_name':'Snell', 'count': count, 'date':'2018-02-01 07:' + i + ':00'};
       sampleHistoricalData.push(newData);
     }
     pg('historical_data').insert(sampleHistoricalData).then()

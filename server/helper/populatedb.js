@@ -1,10 +1,4 @@
-var username = require('os').userInfo().username;
-var conString = process.env.DB_URL || "postgres://postgres:5432@localhost/" + username;
-var pg = require('knex')({
-    client: 'pg',
-    connection: conString,
-    searchPath: ['knex', 'public']
-});
+var pg = require('../models/knexfile');
 var format = require('pg-format');
 
 var sampleHistoricalData = [

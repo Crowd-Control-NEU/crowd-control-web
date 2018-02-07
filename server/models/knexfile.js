@@ -18,6 +18,14 @@ var options = {
             max:3
         }
       },
+      test: {
+          client: 'pg',
+          connection: 'postgres://postgres:5432@localhost/test',
+          pool: {
+              min: 1,
+              max: 3
+          }
+      }
   };
 
 var environment = process.env.NODE_ENV || 'development';

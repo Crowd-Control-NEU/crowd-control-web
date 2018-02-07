@@ -65,8 +65,10 @@ class Location extends Component {
 
     return (
       <div className="container">
+      <center>
         <h1>{this.state.name}</h1>
-        <h3>{this.state.count}</h3>
+        <h1>{this.state.count}</h1>
+      </center>
         <VictoryChart
           theme={VictoryTheme.material}
           height={200}

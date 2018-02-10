@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 var db = require('./models/db');
+var parser = require('./models/parser');
 var socketio = require('socket.io')
 
 var bodyParser = require("body-parser");
@@ -56,6 +57,7 @@ app.get('/api/test', (req, res) => {
 app.get('/count/:location', async (req, res) => {
     var count = await db.getCountAtLocation(req.params.location).then();
     var historical = await db.getHistoricalForLocation(req.params.location).then();
+    var dailyAverages = parser.getDailyAverages(historical);
     count[0]['historical'] = historical;
     res.send(count);
 });
@@ -95,5 +97,5 @@ app.post('/data-add', async (req, res) => {
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/../client/build/index.html'));
   });
-  
+
 module.exports = app;

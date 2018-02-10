@@ -31,10 +31,15 @@ function getCountAtLocation(location_name) {
     });
 }
 
-// get historical data for a location
+// get data from last 30 days for a location
+// TODO: obtain historical data for a given range, instead of only the last 30 days
 function getHistoricalForLocation(location_name) {
+    var date = new Date();
+    date.setMonth(date.getMonth() - 1);
     return new Promise(async (resolve, reject) => {
-        var historical = knex('historical_data').select().where('location_name', '=', location_name)
+        var historical = knex('historical_data').select()
+        .where('location_name', '=', location_name)
+        .andWhere('date', '>', date)
         .then()
         .catch(function(e){
             reject(e);

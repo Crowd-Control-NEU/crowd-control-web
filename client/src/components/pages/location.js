@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from './../buttons/button';
 import socketIOClient from 'socket.io-client';
 import { VictoryAxis, VictoryLine, VictoryChart, VictoryTheme } from 'victory';
 
@@ -81,6 +82,12 @@ class Location extends Component {
           <VictoryAxis dependentAxis/>
           <VictoryLine data={this.state.graphData}/>
         </VictoryChart>
+        <center>
+            <Button text="Daily"></Button>
+            <Button text="Weekly"></Button>
+            <Button text="Monthly"></Button>
+            <Button text="Yearly"></Button>
+        </center>
       </div>
     );
   }

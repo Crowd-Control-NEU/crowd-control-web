@@ -28,6 +28,14 @@ class Location extends Component {
       .catch(err => console.log(err));
   }
 
+  componentDidUpdate() {
+    console.log("Retrieving " + this.state.granularity + " data for " + this.state.startingDate + " to " + this.state.endingDate)
+
+    // TODO call function to query database
+
+
+  }
+
   capitalize(name) {
     var parts = name.split(" ");
     var result = [];
@@ -92,13 +100,25 @@ class Location extends Component {
       this.setState({ count: newCount });
     });
 
+    var buttonStyle = {"display": "flex", "align-items": "center", "justify-content": "center"}
+
     return (
       <div className="container">
-      <center>
-        <h1>{this.state.name}</h1>
-        <h1>{this.state.count}</h1>
-        <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
-      </center>
+        <center>
+          <h1>{this.state.name}</h1>
+          <h1>{this.state.count}</h1>
+          <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
+        </center>
+        <center>
+          <DatePicker onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>
+          <DatePicker onChange={(date) => this.onEndingDateChange(date)} value={this.state.endingDate}/>
+        </center>
+        <center style={buttonStyle}>
+            <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
+            <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
+            <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
+            <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
+        </center>
         <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10}>
           <VictoryAxis
             style={{ tickLabels: {fontSize: 5}}}
@@ -109,14 +129,6 @@ class Location extends Component {
             data={this.state.graphData}
             interpolation='monotoneX'/>
         </VictoryChart>
-        <center>
-          <DatePicker onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>
-          <DatePicker onChange={(date) => this.onEndingDateChange(date)} value={this.state.endingDate}/>
-            <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
-            <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
-            <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
-            <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
-        </center>
       </div>
     );
   }

@@ -6,13 +6,17 @@ class Button extends React.Component {
 
          this.state = {
               buttonText: "Button",
-              selected: true
+              selected: false
          }
     }
 
     changeColor() {
         this.setState({selected: !this.state.selected});
         this.props.update();
+    }
+
+    toggle() {
+        this.setState({selected: false});
     }
 
     render(){

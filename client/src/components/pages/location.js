@@ -58,8 +58,29 @@ class Location extends Component {
   }
 
   buttonManager(str){
-        alert("Transforming chart to display " + str + " trends")
+        if (str === "daily") {
+          this.refs.weekly.toggle();
+          this.refs.monthly.toggle();
+          this.refs.yearly.toggle();
+        }
 
+        if (str === "weekly") {
+          this.refs.daily.toggle();
+          this.refs.monthly.toggle();
+          this.refs.yearly.toggle();
+        }
+
+        if (str === "monthly") {
+          this.refs.daily.toggle();
+          this.refs.weekly.toggle();
+          this.refs.yearly.toggle();
+        }
+
+        if (str === "yearly") {
+          this.refs.daily.toggle();
+          this.refs.weekly.toggle();
+          this.refs.monthly.toggle();
+        }
         // TODO call functions that retrieve daily/weekly/montly/yearly data for graph
   }
 
@@ -89,10 +110,10 @@ class Location extends Component {
           <VictoryLine data={this.state.graphData}/>
         </VictoryChart>
         <center>
-            <Button text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
-            <Button text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
-            <Button text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
-            <Button text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
+            <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
+            <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
+            <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
+            <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
         </center>
       </div>
     );

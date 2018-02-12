@@ -6,8 +6,9 @@ import { VictoryAxis, VictoryLine, VictoryChart, VictoryTheme } from 'victory';
 class Location extends Component {
   state = {
     count: 0,
-    historical: [],
     graphData: [],
+    tickValues: [0, 1, 2, 3, 4, 5, 6],
+    tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000'
   };
@@ -17,8 +18,7 @@ class Location extends Component {
       .then(res => {
         this.setState({
           count: res[0].count,
-          historical: res[0].historical,
-          graphData: this.formatGraphData(res[0].historical)
+          graphData: res[0].graphData,
         });
       })
       .catch(err => console.log(err));
@@ -42,20 +42,6 @@ class Location extends Component {
 
     return body;
   };
-
-  formatGraphData(data) {
-    var result = [];
-    var count = 0;
-    for (var i = 0; i < data.length; i++) {
-      var item = data[i];
-      count += item.count;
-      result.push({
-        x: i, // item.date
-        y: count
-      });
-    }
-    return result;
-  }
 
   buttonManager(str){
         if (str === "daily") {
@@ -97,17 +83,15 @@ class Location extends Component {
         <h1>{this.state.name}</h1>
         <h1>{this.state.count}</h1>
       </center>
-        <VictoryChart
-          theme={VictoryTheme.material}
-          height={200}
-        >
+        <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10}>
           <VictoryAxis
-            tickCount={10}
-            style={{
-              tickLabels: {fontSize: 5}
-            }}/>
+            style={{ tickLabels: {fontSize: 5}}}
+            tickValues={ this.state.tickValues }
+            tickFormat={ this.state.tickFormat }/>
           <VictoryAxis dependentAxis/>
-          <VictoryLine data={this.state.graphData}/>
+          <VictoryLine
+            data={this.state.graphData}
+            interpolation='monotoneX'/>
         </VictoryChart>
         <center>
             <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>

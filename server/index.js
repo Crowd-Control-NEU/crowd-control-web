@@ -58,7 +58,7 @@ app.get('/count/:location', async (req, res) => {
     var count = await db.getCountAtLocation(req.params.location).then();
     var historical = await db.getHistoricalForLocation(req.params.location).then();
     var dailyAverages = parser.getDailyAverages(historical);
-    count[0]['historical'] = historical;
+    count[0]['graphData'] = dailyAverages;
     res.send(count);
 });
 
@@ -74,7 +74,7 @@ app.post('/data-add', async (req, res) => {
     var location_name = req.body.location_name;
     var count = req.body.count;
     var date = req.body.date;
-    
+
     var locations = await db.getLocations();
     var location_is_registered = false;
     for(var i = 0; i < locations.length; i++) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from './../buttons/button';
 import socketIOClient from 'socket.io-client';
 import { VictoryAxis, VictoryLine, VictoryChart, VictoryTheme } from 'victory';
+import DatePicker from 'react-date-picker';
 
 class Location extends Component {
   state = {
@@ -10,7 +11,9 @@ class Location extends Component {
     tickValues: [0, 1, 2, 3, 4, 5, 6],
     tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     name: this.capitalize(this.props.match.params.name),
-    endpoint: 'http://localhost:5000'
+    endpoint: 'http://localhost:5000',
+    startingDate: new Date(),
+    endingDate: new Date()
   };
 
   componentDidMount() {
@@ -70,6 +73,13 @@ class Location extends Component {
         // TODO call functions that retrieve daily/weekly/montly/yearly data for graph
   }
 
+  onStartingDateChange(date) {
+    this.setState({ startingDate: date });
+  }
+  onEndingDateChange(date) {
+    this.setState({ endingDate: date })
+  }
+
   render() {
     const socket = socketIOClient();
 
@@ -82,6 +92,7 @@ class Location extends Component {
       <center>
         <h1>{this.state.name}</h1>
         <h1>{this.state.count}</h1>
+        <h2>Data for {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h2>
       </center>
         <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10}>
           <VictoryAxis
@@ -94,6 +105,8 @@ class Location extends Component {
             interpolation='monotoneX'/>
         </VictoryChart>
         <center>
+          <DatePicker onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>
+          <DatePicker onChange={(date) => this.onEndingDateChange(date)} value={this.state.endingDate}/>
             <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
             <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
             <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>

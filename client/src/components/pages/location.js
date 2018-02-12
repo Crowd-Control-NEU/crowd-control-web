@@ -12,6 +12,7 @@ class Location extends Component {
     tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000',
+    granularity: 'Daily',
     startingDate: new Date(),
     endingDate: new Date()
   };
@@ -51,24 +52,28 @@ class Location extends Component {
           this.refs.weekly.toggle();
           this.refs.monthly.toggle();
           this.refs.yearly.toggle();
+          this.setState({granularity: "Daily"})
         }
 
         if (str === "weekly") {
           this.refs.daily.toggle();
           this.refs.monthly.toggle();
           this.refs.yearly.toggle();
+          this.setState({granularity: "Weekly"})
         }
 
         if (str === "monthly") {
           this.refs.daily.toggle();
           this.refs.weekly.toggle();
           this.refs.yearly.toggle();
+          this.setState({granularity: "Monthly"})
         }
 
         if (str === "yearly") {
           this.refs.daily.toggle();
           this.refs.weekly.toggle();
           this.refs.monthly.toggle();
+          this.setState({granularity: "Yearly"})
         }
         // TODO call functions that retrieve daily/weekly/montly/yearly data for graph
   }
@@ -92,7 +97,7 @@ class Location extends Component {
       <center>
         <h1>{this.state.name}</h1>
         <h1>{this.state.count}</h1>
-        <h2>Data for {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h2>
+        <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
       </center>
         <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10}>
           <VictoryAxis

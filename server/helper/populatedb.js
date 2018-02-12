@@ -1,13 +1,7 @@
 var pg = require('../models/knexfile');
 var format = require('pg-format');
 
-var sampleHistoricalData = [
-    {'location_name':'Rebeccas', 'count': 1, 'date':'2018-01-16 15:57:16.736741'},
-    {'location_name':'Rebeccas', 'count':1, 'date':'2018-01-15 15:57:16.736741'},
-    {'location_name':'Rebeccas', 'count':1, 'date':'2018-01-14 17:57:16.736741'},
-    {'location_name':'Rebeccas', 'count':1, 'date':'2018-01-13 16:57:16.736741'},
-    {'location_name':'Marino', 'count':1, 'date':'2018-01-11 17:57:16.736741'}
-];
+var sampleHistoricalData = [];
 
 var sampleLiveData = [
     {'location_name':'Rebeccas', 'count':25},
@@ -27,12 +21,20 @@ function populateHistoricalData() {
     var date = new Date();
     for (var i = 60; i >= 1; i--) {
       var newDate = new Date(date.getTime() - 24*60*60*1000*i);
-      var count = Math.floor(Math.random() * 50);
-      var newData = {'location_name':'Snell', 'count': count, 'date': newDate};
-      sampleHistoricalData.push(newData);
+      addRandomCountForLocation(newDate, 'Curry Student Center');
+      addRandomCountForLocation(newDate, 'Rebeccas');
+      addRandomCountForLocation(newDate, 'Snell');
     }
     pg('historical_data').insert(sampleHistoricalData).then()
 }
+
+// add random count to historical data for a given date and location
+function addRandomCountForLocation(date, location) {
+  var count = Math.floor(Math.random() * 50);
+  var newData = {'location_name': location, 'count': count, 'date': date};
+  sampleHistoricalData.push(newData);
+}
+
 function populateLiveData() {
    pg.insert(sampleLiveData).into('live_data').then()
 }

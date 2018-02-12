@@ -10,16 +10,13 @@ class Button extends React.Component {
          }
     }
 
-    changeColor(){
-        this.setState({selected: !this.state.selected})
-    }
-
-    nameButton(name){
-        this.setState( {buttonText: name})
+    changeColor() {
+        this.setState({selected: !this.state.selected});
+        this.props.update();
     }
 
     render(){
-        let bgColor = this.state.selected ? "red" : "white"
+        let bgColor = this.state.selected ? "orange" : "grey"
 
         return (
              <div>

@@ -57,6 +57,12 @@ class Location extends Component {
     return result;
   }
 
+  buttonManager(str){
+        alert("Transforming chart to display " + str + " trends")
+
+        // TODO call functions that retrieve daily/weekly/montly/yearly data for graph
+  }
+
   render() {
     const socket = socketIOClient();
 
@@ -83,10 +89,10 @@ class Location extends Component {
           <VictoryLine data={this.state.graphData}/>
         </VictoryChart>
         <center>
-            <Button text="Daily"></Button>
-            <Button text="Weekly"></Button>
-            <Button text="Monthly"></Button>
-            <Button text="Yearly"></Button>
+            <Button text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
+            <Button text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
+            <Button text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
+            <Button text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
         </center>
       </div>
     );

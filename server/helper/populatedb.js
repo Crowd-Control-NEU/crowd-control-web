@@ -1,5 +1,6 @@
 var pg = require('../models/knexfile');
 var format = require('pg-format');
+var moment = require('moment');
 
 var sampleHistoricalData = [];
 
@@ -18,21 +19,34 @@ function clearTable() {
 
 // populate the database
 function populateHistoricalData() {
-    var date = new Date();
-    for (var i = 60; i >= 1; i--) {
+    var date = moment().startOf('day').toDate();
+    for (var i = 60; i >= 1; i--) { // Adds data for the last 60 days
       var newDate = new Date(date.getTime() - 24*60*60*1000*i);
-      addRandomCountForLocation(newDate, 'Curry Student Center');
-      addRandomCountForLocation(newDate, 'Rebeccas');
-      addRandomCountForLocation(newDate, 'Snell');
+      addCountsForDay(newDate, 'Curry Student Center');
+      addCountsForDay(newDate, 'Rebeccas');
+      addCountsForDay(newDate, 'Snell');
     }
     pg('historical_data').insert(sampleHistoricalData).then()
 }
 
-// add random count to historical data for a given date and location
-function addRandomCountForLocation(date, location) {
-  var count = Math.floor(Math.random() * 50);
+// Adds counts every 15 minutes for a day
+function addCountsForDay(date, location) {
+  var sum = 0;
+  for (var i = 0; i < 96; i++) {
+    sum += addRandomCountForLocation(date, location, sum);
+    date = moment(date).add(15, 'm').toDate();
+  }
+}
+
+// add random count (-5 to 5) to historical data for a given date and location
+function addRandomCountForLocation(date, location, sum) {
+  var count = Math.floor(Math.random() * 11) - 5;
+  if (sum + count < 0) { // insures that total count will never be negative for a day
+    count = 0;
+  }
   var newData = {'location_name': location, 'count': count, 'date': date};
   sampleHistoricalData.push(newData);
+  return count;
 }
 
 function populateLiveData() {

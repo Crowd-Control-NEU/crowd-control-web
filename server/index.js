@@ -67,7 +67,7 @@ app.get('/data/:graph', async (req, res) => {
     console.log(req.params.graph)
     var graphRequest = JSON.parse(req.params.graph)
     if(typeof graphRequest.location !== 'undefined' && typeof graphRequest.type !== 'undefined' && typeof graphRequest.startDate !== 'undefined' && typeof graphRequest.endDate !== 'undefined') {
-        var historical = db.getHistoricalGraphData(graphRequest.location, graphRequest.type, graphRequest.startDate, graphRequest.endDate);
+        var historical = await db.getHistoricalGraphData(graphRequest.location, graphRequest.type, graphRequest.startDate, graphRequest.endDate);
         res.send({express: historical});
        }
     else {

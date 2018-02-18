@@ -48,85 +48,84 @@ function getHistoricalForLocation(location_name) {
     });
 }
 
-function getHistoricalGraphData(location, type, startDate, endDate) {
+async function getHistoricalGraphData(location, type, startDate, endDate) {
     console.log("Received request of graph data for " + location + " with " + type + " granularity from " + startDate + " to " + endDate);
 
     if (type == "daily") {
-        return getHistoricalGraphDataDaily();
+        return getHistoricalGraphDataDaily(location, startDate, endDate);
     }
 
     if (type == "weekly") {
-        return getHistoricalGraphDataWeekly();
+        return getHistoricalGraphDataWeekly(location, startDate, endDate);
     }
 
     if (type == "monthly") {
-        return getHistoricalGraphDataMonthly();
+        return getHistoricalGraphDataMonthly(location, startDate, endDate);
     }
 
     if (type == "yearly") {
-        return getHistoricalGraphDataYearly();
+        return getHistoricalGraphDataYearly(location, startDate, endDate);
     }
 }
 
 function getHistoricalGraphDataDaily(location, startDate, endDate) {
-    var test = "daily graph data"
-    return test
-     /*   return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         var historical = knex('historical_data').select()
-        .where('location_name', '=', location_name)
-        .andWhere('date', '>', start_date)
-        .andWhere('date', '<', end_date)
+        .where('location_name', '=', location)
+        .andWhere('date', '>', startDate)
+        .andWhere('date', '<', endDate)
         .then()
         .catch(function(e){
             reject(e);
+            console.log(e);
         })
         return resolve(historical);
-    }); */
+    }); 
 }
 
 function getHistoricalGraphDataWeekly(location, startDate, endDate) {
-    return "weekly graph data"
-    /*   return new Promise(async (resolve, reject) => {
-       var historical = knex('historical_data').select()
-       .where('location_name', '=', location_name)
-       .andWhere('date', '>', start_date)
-       .andWhere('date', '<', end_date)
-       .then()
-       .catch(function(e){
-           reject(e);
-       })
-       return resolve(historical);
-   }); */
+    return new Promise(async (resolve, reject) => {
+        var historical = knex('historical_data').select()
+        .where('location_name', '=', location)
+        .andWhere('date', '>', startDate)
+        .andWhere('date', '<', endDate)
+        .then()
+        .catch(function(e){
+            reject(e);
+            console.log(e);
+        })
+        return resolve(historical);
+    }); 
 }
 
 function getHistoricalGraphDataMonthly(location, startDate, endDate) {
-    return "monthly graph data"
-    /*   return new Promise(async (resolve, reject) => {
-       var historical = knex('historical_data').select()
-       .where('location_name', '=', location_name)
-       .andWhere('date', '>', start_date)
-       .andWhere('date', '<', end_date)
-       .then()
-       .catch(function(e){
-           reject(e);
-       })
-       return resolve(historical);
-   }); */
+    return new Promise(async (resolve, reject) => {
+        var historical = knex('historical_data').select()
+        .where('location_name', '=', location)
+        .andWhere('date', '>', startDate)
+        .andWhere('date', '<', endDate)
+        .then()
+        .catch(function(e){
+            reject(e);
+            console.log(e);
+        })
+        return resolve(historical);
+    }); 
 }
 
 function getHistoricalGraphDataYearly(location, startDate, endDate) {
-    return "yearly graph data"
-    /*   return new Promise(async (resolve, reject) => {
-       var historical = knex('historical_data').select()
-       .where('location_name', '=', location_name)
-       .andWhere('date', '>', start_date)
-       .andWhere('date', '<', end_date)
-       .then()
-       .catch(function(e){
-           reject(e);
-       })
-       return resolve(historical);
-   }); */
+    return new Promise(async (resolve, reject) => {
+        var historical = knex('historical_data').select()
+        .where('location_name', '=', location)
+        .andWhere('date', '>', startDate)
+        .andWhere('date', '<', endDate)
+        .then()
+        .catch(function(e){
+            reject(e);
+            console.log(e);
+        })
+        return resolve(historical);
+    }); 
 }
 
 // get current list of all locations

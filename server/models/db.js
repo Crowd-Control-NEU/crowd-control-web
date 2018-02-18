@@ -48,6 +48,20 @@ function getHistoricalForLocation(location_name) {
     });
 }
 
+function getHistoricalDailyForLocation(location_name, start_date, end_date) {
+    return new Promise(async (resolve, reject) => {
+        var historical = knex('historical_data').select()
+        .where('location_name', '=', location_name)
+        .andWhere('date', '>', start_date)
+        .andWhere('date', '<', end_date)
+        .then()
+        .catch(function(e){
+            reject(e);
+        })
+        return resolve(historical);
+    });
+}
+
 // get current list of all locations
 function getLocations() {
     return new Promise(async (resolve, reject) => {
@@ -89,6 +103,7 @@ function incrementCount(location_name, count){
 createDefaultTable();
 module.exports.getCountAtLocation = getCountAtLocation;
 module.exports.getHistoricalForLocation = getHistoricalForLocation;
+module.exports.getHistoricalDailyForLocation = getHistoricalDailyForLocation;
 module.exports.getLocations = getLocations;
 module.exports.addDataEntry = addDataEntry;
 module.exports.incrementCount = incrementCount;

@@ -3,6 +3,7 @@ var format = require('pg-format');
 var moment = require('moment');
 
 var sampleHistoricalData = [];
+var sampleHistoricalDataWollastons = [];
 
 var sampleLiveData = [
     {'location_name':'Rebeccas', 'count':25},
@@ -27,6 +28,17 @@ function populateHistoricalData() {
       addCountsForDay(newDate, 'Snell');
     }
     pg('historical_data').insert(sampleHistoricalData).then()
+}
+
+// populate the 3 years worth of data for Wollastons example
+function populateHistoricalDataForWollastons() {
+  var date = moment().startOf('day').toDate();
+  for (var i = 1000; i >= 1; i--) { // Adds data for the last 60 days
+    var newDate = new Date(date.getTime() - 24*60*60*1000*i);
+    var newData = {'location_name': "Wollastons", 'count': 3, 'date': newDate};
+    sampleHistoricalDataWollastons.push(newData);
+  }
+  pg('historical_data').insert(sampleHistoricalDataWollastons).then()
 }
 
 // Adds counts every 15 minutes for a day
@@ -54,6 +66,7 @@ function populateLiveData() {
 }
 function populatedb() {
     populateHistoricalData();
+    populateHistoricalDataForWollastons();
     populateLiveData();
 }
 

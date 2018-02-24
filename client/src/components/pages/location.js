@@ -126,8 +126,7 @@ class Location extends Component {
             tickFormat={ this.state.tickFormat }/>
           <VictoryAxis dependentAxis/>
           <VictoryLine
-            data={this.state.graphData}
-            interpolation='monotoneX'/>
+            data={this.state.graphData}/>
         </VictoryChart>
       </div>
     );

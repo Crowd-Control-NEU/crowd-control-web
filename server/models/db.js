@@ -97,7 +97,7 @@ function getHistoricalGraphDataWeekly(location, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         const client = new Client(conString)
         client.connect() 
-        var queryWeek = 'SELECT date_trunc($1, date) AS "Week" , sum(count) AS "No. of visitors" FROM historical_data WHERE location_name = $2 and date > $3 and date < $4 GROUP BY 1 ORDER BY 1;'
+        var queryWeek = 'SELECT date_trunc($1, date) AS "Week" , sum(count) AS "visitors" FROM historical_data WHERE location_name = $2 and date > $3 and date < $4 GROUP BY 1 ORDER BY 1;'
         const res = await client.query(queryWeek, ['week', location, startDate, endDate])
         console.log(res.rows)
         resolve(res.rows)

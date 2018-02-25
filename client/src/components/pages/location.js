@@ -29,26 +29,27 @@ class Location extends Component {
   }
 
   componentDidUpdate() {
-    console.log("Retrieving " + this.state.granularity + " data for " + this.state.startingDate + " to " + this.state.endingDate)
-    
-    // TODO call function to query database
-    if (this.state.granularity === "Daily")  {
-  //    this.callGraphApi();
-    }
-
-    if (this.state.granularity === "Weekly") {
-      this.callGraphApi();
-    }
-
-    if (this.state.granularity === "Monthly") {
-  //    this.callGraphApi();
-    }
-
-    if (this.state.granularity === "Yearly") {
-  //    this.callGraphApi();
-    }
-    
   }
+
+updateGraph(str) {
+  if (str === "daily")  {
+      console.log("Updating graph for daily")
+
+  }
+
+  if (str === "weekly") {
+      console.log("Updating graph for weekly")
+      this.callGraphApi()
+  }
+
+  if (str === "monthly") {
+      console.log("Update graph for monthly")
+  }
+
+  if (str === "yearly") {
+      console.log("Updating graph for yearly")
+  }
+}
 
   callGraphApi = async () => {
     const graphJSON = {"location": this.state.name, "type": this.state.granularity.toLowerCase(), "startDate": this.state.startingDate, "endDate": this.state.endingDate};
@@ -56,7 +57,27 @@ class Location extends Component {
 
    const response = await fetch('/data/' + jsonString);
    const body = await response.json();
-   console.log(body)   
+   console.log(body) 
+   this.buildGraph(body)  
+  }
+
+  buildGraph(data){
+    var newValues = []
+    var newFormat = []
+    var newGraphData = []
+
+    for(var i = 0; i < data.length; i++) {
+      var row = data[i];
+      var week = row.Week;
+      var visitors = row.visitors;
+      newFormat.push(String(week.slice(0,10)))
+      newGraphData.push(Number(visitors))
+      newValues.push(i)
+    }
+
+    this.setState({tickFormat: newFormat})
+    this.setState({graphData: newGraphData})
+    this.setState({tickValues: newValues})
   }
 
   capitalize(name) {
@@ -90,7 +111,10 @@ class Location extends Component {
           this.refs.daily.toggle();
           this.refs.monthly.toggle();
           this.refs.yearly.toggle();
-          this.setState({granularity: "Weekly"})
+          this.setState({granularity: "Weekly"} , () => { 
+            console.log("Weekly hit")
+            this.updateGraph(str)
+        });
         }
 
         if (str === "monthly") {
@@ -106,7 +130,6 @@ class Location extends Component {
           this.refs.monthly.toggle();
           this.setState({granularity: "Yearly"})
         }
-        // TODO call functions that retrieve daily/weekly/montly/yearly data for graph
   }
 
   onStartingDateChange(date) {

@@ -30,10 +30,33 @@ class Location extends Component {
 
   componentDidUpdate() {
     console.log("Retrieving " + this.state.granularity + " data for " + this.state.startingDate + " to " + this.state.endingDate)
-
+    
     // TODO call function to query database
+    if (this.state.granularity === "Daily")  {
+  //    this.callGraphApi();
+    }
 
+    if (this.state.granularity === "Weekly") {
+      this.callGraphApi();
+    }
 
+    if (this.state.granularity === "Monthly") {
+  //    this.callGraphApi();
+    }
+
+    if (this.state.granularity === "Yearly") {
+  //    this.callGraphApi();
+    }
+    
+  }
+
+  callGraphApi = async () => {
+    const graphJSON = {"location": this.state.name, "type": this.state.granularity.toLowerCase(), "startDate": this.state.startingDate, "endDate": this.state.endingDate};
+    var jsonString = JSON.stringify(graphJSON)
+
+   const response = await fetch('/data/' + jsonString);
+   const body = await response.json();
+   console.log(body)   
   }
 
   capitalize(name) {
@@ -109,10 +132,6 @@ class Location extends Component {
           <h1>{this.state.count}</h1>
           <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
         </center>
-        <center>
-          <DatePicker onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>
-          <DatePicker onChange={(date) => this.onEndingDateChange(date)} value={this.state.endingDate}/>
-        </center>
         <center style={buttonStyle}>
             <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
             <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
@@ -128,6 +147,10 @@ class Location extends Component {
           <VictoryLine
             data={this.state.graphData}/>
         </VictoryChart>
+        <center>
+          <DatePicker onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>
+          <DatePicker onChange={(date) => this.onEndingDateChange(date)} value={this.state.endingDate}/>
+        </center>
       </div>
     );
   }

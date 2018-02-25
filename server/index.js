@@ -64,15 +64,11 @@ app.get('/count/:location', async (req, res) => {
 
 // get the graph data  (EXAMPLE: /data/{"location":"Wollastons", "type":"daily", "startDate":"2015-01-01", "endDate":"2015-02-01"})
 app.get('/data/:graph', async (req, res) => {
-    console.log(req.params.graph)
     var graphRequest = JSON.parse(req.params.graph)
     if(typeof graphRequest.location !== 'undefined' && typeof graphRequest.type !== 'undefined' && typeof graphRequest.startDate !== 'undefined' && typeof graphRequest.endDate !== 'undefined') {
         var historical = await db.getHistoricalGraphData(graphRequest.location, graphRequest.type, graphRequest.startDate, graphRequest.endDate);
-        res.send({express: historical});
+        res.send(historical);
        }
-    else {
-        console.log("/data/:graph GET REQUEST FAILED")
-    }
 });
 
 // get the list of locations

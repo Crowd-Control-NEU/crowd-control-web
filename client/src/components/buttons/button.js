@@ -11,8 +11,13 @@ class Button extends React.Component {
     }
 
     changeColor() {
-        this.setState({selected: !this.state.selected});
-        this.props.update();
+        if (this.state.selected) {
+            console.log("Dont change button color or state")
+        }
+        else {
+            this.setState({selected: !this.state.selected});
+            this.props.update();
+        }
     }
 
     toggle() {

@@ -111,10 +111,11 @@ updateGraph(str) {
           this.refs.daily.toggle();
           this.refs.monthly.toggle();
           this.refs.yearly.toggle();
+          
           this.setState({granularity: "Weekly"} , () => { 
             console.log("Weekly hit")
             this.updateGraph(str)
-        });
+          });
         }
 
         if (str === "monthly") {
@@ -146,7 +147,7 @@ updateGraph(str) {
       this.setState({ count: newCount });
     });
 
-    var buttonStyle = {"display": "flex", "align-items": "center", "justify-content": "center"}
+    var buttonStyle = {"display": "flex", "alignItems": "center", "justifyContent": "center"}
 
     return (
       <div className="container">

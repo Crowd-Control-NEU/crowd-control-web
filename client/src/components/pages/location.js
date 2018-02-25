@@ -39,38 +39,46 @@ updateGraph(str) {
 
   if (str === "weekly") {
       console.log("Updating graph for weekly")
-      this.callGraphApi()
+      this.callGraphApi(str)
   }
 
   if (str === "monthly") {
-      console.log("Update graph for monthly")
+      this.callGraphApi(str)
   }
 
   if (str === "yearly") {
-      console.log("Updating graph for yearly")
+      this.callGraphApi(str)
   }
 }
 
-  callGraphApi = async () => {
+  callGraphApi = async (str) => {
     const graphJSON = {"location": this.state.name, "type": this.state.granularity.toLowerCase(), "startDate": this.state.startingDate, "endDate": this.state.endingDate};
     var jsonString = JSON.stringify(graphJSON)
 
-   const response = await fetch('/data/' + jsonString);
-   const body = await response.json();
-   console.log(body) 
-   this.buildGraph(body)  
+    const response = await fetch('/data/' + jsonString);
+    const body = await response.json();
+    console.log(body) 
+    this.buildGraph(body, str)  
   }
 
-  buildGraph(data){
+  buildGraph(data, str){
     var newValues = []
     var newFormat = []
     var newGraphData = []
+    var accessor;
+
+    if (this.state.granularity === "Weekly") {
+      accessor = "Week";
+    }
+    else if (this.state.granularity === "Monthly") {
+      accessor = "Month";
+    }
 
     for(var i = 0; i < data.length; i++) {
       var row = data[i];
-      var week = row.Week;
+      var x_axis = row[accessor];
       var visitors = row.visitors;
-      newFormat.push(String(week.slice(0,10)))
+      newFormat.push(String(x_axis.slice(0,10)))
       newGraphData.push(Number(visitors))
       newValues.push(i)
     }
@@ -122,14 +130,22 @@ updateGraph(str) {
           this.refs.daily.toggle();
           this.refs.weekly.toggle();
           this.refs.yearly.toggle();
-          this.setState({granularity: "Monthly"})
+
+          this.setState({granularity: "Monthly"}, () => { 
+            console.log("Monthly hit")
+            this.updateGraph(str)
+          });
         }
 
         if (str === "yearly") {
           this.refs.daily.toggle();
           this.refs.weekly.toggle();
           this.refs.monthly.toggle();
-          this.setState({granularity: "Yearly"})
+
+          this.setState({granularity: "Yearly"}, () => { 
+            console.log("Yearly hit")
+            this.updateGraph(str)
+          });
         }
   }
 

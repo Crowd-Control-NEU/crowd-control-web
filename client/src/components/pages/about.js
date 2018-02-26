@@ -7,14 +7,14 @@ class About extends Component {
         <h1>About Crowd Control</h1>
         <p>Meet the team!</p>
         <ul>
-          <li>Joseph Lally></li>
-          <li>Yuval Shatil></li>
-          <li>Justin Vincelette></li>
-          <li>Victor Liang></li>
-          <li>Afolabi Kolawole></li>
-          <li>Richard Yeung></li>
-          <li>Andy Gonzalez></li>
-          <li>David Masi></li>
+          <li>Joseph Lally</li>
+          <li>Yuval Shatil</li>
+          <li>Justin Vincelette</li>
+          <li>Victor Liang</li>
+          <li>Afolabi Kolawole</li>
+          <li>Richard Yeung</li>
+          <li>Andy Gonzalez</li>
+          <li>David Masi</li>
         </ul>
       </div>
     );

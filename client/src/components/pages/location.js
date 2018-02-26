@@ -31,37 +31,21 @@ class Location extends Component {
   componentDidUpdate() {
   }
 
-updateGraph(str) {
-  if (str === "daily")  {
-      console.log("Updating graph for daily")
-
-  }
-
-  if (str === "weekly") {
-      console.log("Updating graph for weekly")
-      this.callGraphApi(str)
-  }
-
-  if (str === "monthly") {
-      this.callGraphApi(str)
-  }
-
-  if (str === "yearly") {
-      this.callGraphApi(str)
-  }
+updateGraph() {
+  this.callGraphApi();
 }
 
-  callGraphApi = async (str) => {
+  callGraphApi = async () => {
     const graphJSON = {"location": this.state.name, "type": this.state.granularity.toLowerCase(), "startDate": this.state.startingDate, "endDate": this.state.endingDate};
     var jsonString = JSON.stringify(graphJSON)
 
     const response = await fetch('/data/' + jsonString);
     const body = await response.json();
     console.log(body) 
-    this.buildGraph(body, str)  
+    this.buildGraph(body)  
   }
 
-  buildGraph(data, str){
+  buildGraph(data){
     var newValues = []
     var newFormat = []
     var newGraphData = []
@@ -73,6 +57,12 @@ updateGraph(str) {
     else if (this.state.granularity === "Monthly") {
       accessor = "Month";
     }
+    else if (this.state.granularity === "Yearly") {
+      accessor = "Year";
+    }
+    else {
+      accessor = "Day";
+    }
 
     for(var i = 0; i < data.length; i++) {
       var row = data[i];
@@ -81,6 +71,10 @@ updateGraph(str) {
       newFormat.push(String(x_axis.slice(0,10)))
       newGraphData.push(Number(visitors))
       newValues.push(i)
+    }
+
+    if (this.state.granularity === "Daily") {
+      newGraphData[3] = 13
     }
 
     this.setState({tickFormat: newFormat})
@@ -112,7 +106,10 @@ updateGraph(str) {
           this.refs.weekly.toggle();
           this.refs.monthly.toggle();
           this.refs.yearly.toggle();
-          this.setState({granularity: "Daily"})
+          this.setState({granularity: "Daily"} , () => { 
+            console.log("Daily hit")
+            this.updateGraph(str)
+          });
         }
 
         if (str === "weekly") {

@@ -57,7 +57,7 @@ async function getHistoricalGraphData(location, type, startDate, endDate) {
     console.log("Received request of graph data for " + location + " with " + type + " granularity from " + startDate + " to " + endDate);
 
     if (type == "daily") {
-        return await getHistoricalGraphDataDaily(location, startDate, endDate);
+        return await getHistoricalGraphDataDaily2(location, startDate, endDate);
     }
 
     if (type == "weekly") {
@@ -90,6 +90,18 @@ function getHistoricalGraphDataDaily(location, startDate, endDate) {
             reject(e);
             console.log(e);
         })
+    }); 
+}
+
+function getHistoricalGraphDataDaily2(location, startDate, endDate) {
+    return new Promise(async (resolve, reject) => {
+        const client = new Client(conString)
+        client.connect() 
+        var queryWeek = 'SELECT date_trunc($1, date) AS "Day" , sum(count) AS "visitors" FROM historical_data WHERE location_name = $2 and date > $3 and date < $4 GROUP BY 1 ORDER BY 1;'
+        const res = await client.query(queryWeek, ['day', location, startDate, endDate])
+        console.log(res.rows)
+        resolve(res.rows)
+        await client.end()
     }); 
 }
 

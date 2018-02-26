@@ -8,8 +8,10 @@ class Location extends Component {
   state = {
     count: 0,
     graphData: [],
-    tickValues: [0, 1, 2, 3, 4, 5, 6],
-    tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    hourlyAverages: [],
+    dailyAverages: [],
+    tickValues: [],
+    tickFormat: [],
     name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000',
     granularity: 'Daily',
@@ -22,8 +24,11 @@ class Location extends Component {
       .then(res => {
         this.setState({
           count: res[0].count,
-          graphData: res[0].graphData,
+          graphData: res[0].hourlyAverages,
+          hourlyAverages: res[0].hourlyAverages,
+          dailyAverages: res[0].dailyAverages
         });
+        this.setAverageTicks('HourlyAverages');
       })
       .catch(err => console.log(err));
   }
@@ -41,8 +46,8 @@ updateGraph() {
 
     const response = await fetch('/data/' + jsonString);
     const body = await response.json();
-    console.log(body) 
-    this.buildGraph(body)  
+    console.log(body)
+    this.buildGraph(body)
   }
 
   buildGraph(data){
@@ -82,6 +87,21 @@ updateGraph() {
     this.setState({tickValues: newValues})
   }
 
+  setAverageTicks(type) {
+    if (type === 'HourlyAverages') {
+      this.setState({
+        tickValues: Array.apply(null, {length: 24}).map(Number.call, Number),
+        tickFormat: ['12am', '', '', '3am', '', '', '6am', '', '', '9am', '', '',
+                    '12pm', '', '', '3pm', '', '', '6pm', '', '', '9pm', '', ''],
+      });
+    } else if (type === 'DailyAverages') {
+      this.setState({
+        tickValues: Array.apply(null, {length: 7}).map(Number.call, Number),
+        tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      });
+    }
+  }
+
   capitalize(name) {
     var parts = name.split(" ");
     var result = [];
@@ -106,7 +126,7 @@ updateGraph() {
           this.refs.weekly.toggle();
           this.refs.monthly.toggle();
           this.refs.yearly.toggle();
-          this.setState({granularity: "Daily"} , () => { 
+          this.setState({granularity: "Daily"} , () => {
             console.log("Daily hit")
             this.updateGraph(str)
           });
@@ -116,8 +136,8 @@ updateGraph() {
           this.refs.daily.toggle();
           this.refs.monthly.toggle();
           this.refs.yearly.toggle();
-          
-          this.setState({granularity: "Weekly"} , () => { 
+
+          this.setState({granularity: "Weekly"} , () => {
             console.log("Weekly hit")
             this.updateGraph(str)
           });
@@ -128,7 +148,7 @@ updateGraph() {
           this.refs.weekly.toggle();
           this.refs.yearly.toggle();
 
-          this.setState({granularity: "Monthly"}, () => { 
+          this.setState({granularity: "Monthly"}, () => {
             console.log("Monthly hit")
             this.updateGraph(str)
           });
@@ -139,7 +159,7 @@ updateGraph() {
           this.refs.weekly.toggle();
           this.refs.monthly.toggle();
 
-          this.setState({granularity: "Yearly"}, () => { 
+          this.setState({granularity: "Yearly"}, () => {
             console.log("Yearly hit")
             this.updateGraph(str)
           });

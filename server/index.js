@@ -57,8 +57,8 @@ app.get('/api/test', (req, res) => {
 app.get('/count/:location', async (req, res) => {
     var count = await db.getCountAtLocation(req.params.location).then();
     var historical = await db.getHistoricalForLocation(req.params.location).then();
-    var dailyAverages = parser.getDailyAverages(historical);
-    count[0]['graphData'] = dailyAverages;
+    count[0]['hourlyAverages'] = parser.getHourlyAverages(historical);
+    count[0]['dailyAverags'] = parser.getDailyAverages(historical);;
     res.send(count);
 });
 

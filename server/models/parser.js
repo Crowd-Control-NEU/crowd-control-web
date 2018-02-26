@@ -35,10 +35,10 @@ function getDailyAverages(data) {
   return result;
 }
 
-// Get sum for each hour of days that fall on the given day of week
+// Get sum for each hour of days that fall on the current day of the week
 // data: historical count data
-// day: int 0-6, representing day of the week
-function getHourlySums(data, day) {
+function getHourlySums(data) {
+  var day = moment().day();
   var sums = {};
   for (var i = 0; i < data.length; i++) {
     var item = data[i];
@@ -51,14 +51,13 @@ function getHourlySums(data, day) {
   return sums;
 }
 
-// Get hourly averages for day of week of given data
+// Get hourly averages for current day of week of given data
 // data: historical count data
-// day: int 0-6, representing day of the week
-function getHourlyAverages(data, day) {
+function getHourlyAverages(data) {
   var occurrences = new Array(24).fill(0);
   var totals = new Array(24).fill(0);
   var result = new Array(24).fill(0);
-  var sums = getHourlySums(data, day);
+  var sums = getHourlySums(data);
   for (date in sums) {
     var hourOfDay = moment(date, "MM/DD/YYYY:H").format('H');
     totals[hourOfDay] += sums[date];

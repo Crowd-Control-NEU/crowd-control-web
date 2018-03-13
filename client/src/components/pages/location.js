@@ -8,8 +8,10 @@ class Location extends Component {
   state = {
     count: 0,
     graphData: [],
-    tickValues: [0, 1, 2, 3, 4, 5, 6],
-    tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    hourlyAverages: [],
+    dailyAverages: [],
+    tickValues: [],
+    tickFormat: [],
     name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000',
     granularity: 'Daily',
@@ -22,8 +24,11 @@ class Location extends Component {
       .then(res => {
         this.setState({
           count: res[0].count,
-          graphData: res[0].graphData,
+          graphData: res[0].hourlyAverages,
+          hourlyAverages: res[0].hourlyAverages,
+          dailyAverages: res[0].dailyAverages
         });
+        this.setAverageTicks('HourlyAverages');
       })
       .catch(err => console.log(err));
   }
@@ -41,8 +46,8 @@ updateGraph() {
 
     const response = await fetch('/data/' + jsonString);
     const body = await response.json();
-    console.log(body) 
-    this.buildGraph(body)  
+    console.log(body)
+    this.buildGraph(body)
   }
 
   buildGraph(data){
@@ -93,6 +98,21 @@ updateGraph() {
     this.setState({tickValues: newValues})
   }
 
+  setAverageTicks(type) {
+    if (type === 'HourlyAverages') {
+      this.setState({
+        tickValues: Array.apply(null, {length: 24}).map(Number.call, Number),
+        tickFormat: ['12am', '', '', '3am', '', '', '6am', '', '', '9am', '', '',
+                    '12pm', '', '', '3pm', '', '', '6pm', '', '', '9pm', '', ''],
+      });
+    } else if (type === 'DailyAverages') {
+      this.setState({
+        tickValues: Array.apply(null, {length: 7}).map(Number.call, Number),
+        tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      });
+    }
+  }
+
   capitalize(name) {
     var parts = name.split(" ");
     var result = [];
@@ -113,47 +133,59 @@ updateGraph() {
   };
 
   buttonManager(str){
+        var buttons = ['avgHourly', 'avgDaily', 'daily', 'weekly', 'monthly', 'yearly'];
+
+        if (str === 'avgHourly') {
+          buttons.splice(0, 1);
+          this.setState({
+            graphData: this.state.hourlyAverages
+          });
+          this.setAverageTicks('HourlyAverages');
+        }
+
+        if (str === 'avgDaily') {
+          buttons.splice(1, 1);
+          this.setState({
+            graphData: this.state.dailyAverages
+          });
+          this.setAverageTicks('DailyAverages')
+        }
+
         if (str === "daily") {
-          this.refs.weekly.toggle();
-          this.refs.monthly.toggle();
-          this.refs.yearly.toggle();
-          this.setState({granularity: "Daily"} , () => { 
+          buttons.splice(2, 1);
+          this.setState({granularity: "Daily"} , () => {
             console.log("Daily hit")
             this.updateGraph(str)
           });
         }
 
         if (str === "weekly") {
-          this.refs.daily.toggle();
-          this.refs.monthly.toggle();
-          this.refs.yearly.toggle();
-          
-          this.setState({granularity: "Weekly"} , () => { 
+          buttons.splice(3, 1);
+          this.setState({granularity: "Weekly"} , () => {
             console.log("Weekly hit")
             this.updateGraph(str)
           });
         }
 
         if (str === "monthly") {
-          this.refs.daily.toggle();
-          this.refs.weekly.toggle();
-          this.refs.yearly.toggle();
-
-          this.setState({granularity: "Monthly"}, () => { 
+          buttons.splice(4, 1);
+          this.setState({granularity: "Monthly"}, () => {
             console.log("Monthly hit")
             this.updateGraph(str)
           });
         }
 
         if (str === "yearly") {
-          this.refs.daily.toggle();
-          this.refs.weekly.toggle();
-          this.refs.monthly.toggle();
-
-          this.setState({granularity: "Yearly"}, () => { 
+          buttons.splice(5, 1);
+          this.setState({granularity: "Yearly"}, () => {
             console.log("Yearly hit")
             this.updateGraph(str)
           });
+        }
+
+        for (var i = 0; i < buttons.length; i++) {
+          var button = buttons[i];
+          this.refs[button].toggle();
         }
   }
 
@@ -181,6 +213,8 @@ updateGraph() {
           <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
         </center>
         <center style={buttonStyle}>
+            <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }}></Button>
+            <Button ref="avgDaily" text="Daily Averages" update={ () => {this.buttonManager("avgDaily") }}></Button>
             <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
             <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
             <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>

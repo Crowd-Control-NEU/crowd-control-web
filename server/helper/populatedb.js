@@ -8,7 +8,8 @@ var sampleHistoricalDataWollastons = [];
 var sampleLiveData = [
     {'location_name':'Rebeccas', 'count':25},
     {'location_name':'Curry Student Center', 'count':100},
-    {'location_name':'Snell', 'count':60}
+    {'location_name':'Snell', 'count':60},
+    {'location_name':'Wollastons', 'count':120}
 ];
 
 // clear the database of any existing rows

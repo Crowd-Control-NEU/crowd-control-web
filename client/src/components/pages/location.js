@@ -193,7 +193,14 @@ updateGraph() {
             tickFormat={ this.state.tickFormat }/>
           <VictoryAxis dependentAxis/>
           <VictoryLine
-            data={this.state.graphData}/>
+            data={this.state.graphData}
+            labels={(datum) => datum.y}
+            style={{
+              labels: {
+                fontSize: 3
+              }
+            }}
+            />
         </VictoryChart>
         <center>
           <DatePicker onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>

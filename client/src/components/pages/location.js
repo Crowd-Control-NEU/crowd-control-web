@@ -234,6 +234,33 @@ updateGraph() {
                 fontSize: 3
               }
             }}
+            events={[{
+              target: "data",
+              eventHandlers: {
+                onMouseOver: () => {
+                  return [
+                    {
+                      target: "data",
+                      mutation: () => ({style: {fill: "gold", width: 30}})
+                    }, {
+                      target: "labels",
+                      mutation: () => ({ active: true })
+                    }
+                  ];
+                },
+                onMouseOut: () => {
+                  return [
+                    {
+                      target: "data",
+                      mutation: () => {}
+                    }, {
+                      target: "labels",
+                      mutation: () => ({ active: false })
+                    }
+                  ];
+                }
+              }
+            }]}
             />
         </VictoryChart>
         <center>

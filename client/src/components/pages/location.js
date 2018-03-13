@@ -64,11 +64,22 @@ updateGraph() {
       accessor = "Day";
     }
 
+    // so x axis does not get overcrowded with text
+    var interval = 1
+    if (data.length > 7) {
+      interval = Math.ceil(data.length/7);
+    }
+
     for(var i = 0; i < data.length; i++) {
       var row = data[i];
       var x_axis = row[accessor];
       var visitors = row.visitors;
-      newFormat.push(String(x_axis.slice(0,10)))
+      if (i%interval === 0) {
+        newFormat.push(String(x_axis.slice(0,10)))
+      }
+      else {
+        newFormat.push('')
+      }
       newGraphData.push(Number(visitors))
       newValues.push(i)
     }
@@ -177,7 +188,7 @@ updateGraph() {
         </center>
         <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10}>
           <VictoryAxis
-            style={{ tickLabels: {fontSize: 5}}}
+            style={{ tickLabels: {fontSize: 3}}}
             tickValues={ this.state.tickValues }
             tickFormat={ this.state.tickFormat }/>
           <VictoryAxis dependentAxis/>

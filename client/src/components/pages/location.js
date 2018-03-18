@@ -22,13 +22,13 @@ class Location extends Component {
   componentDidMount() {
     this.callApi()
       .then(res => {
-        this.setState({
-          count: res[0].count,
-          graphData: res[0].hourlyAverages,
-          hourlyAverages: res[0].hourlyAverages,
-          dailyAverages: res[0].dailyAverages
-        });
-        this.setAverageTicks('HourlyAverages');
+    //    this.setState({
+    //      count: res[0].count,
+    //      graphData: res[0].hourlyAverages,
+   //       hourlyAverages: res[0].hourlyAverages,
+  //        dailyAverages: res[0].dailyAverages
+  //      });
+ //       this.setAverageTicks('HourlyAverages');
       })
       .catch(err => console.log(err));
   }
@@ -85,7 +85,7 @@ updateGraph() {
       else {
         newFormat.push('')
       }
-      newGraphData.push(Number(visitors))
+      newGraphData.push({"y": Number(visitors), "date":String(x_axis.slice(0,10))})
       newValues.push(i)
     }
 
@@ -228,7 +228,7 @@ updateGraph() {
           <VictoryAxis dependentAxis/>
           <VictoryLine
             data={this.state.graphData}
-            labels={(datum) => datum.y}
+            labels={(data) => data.date + '\n Max Count: ' + data.y }
             labelComponent={<VictoryTooltip style={{ fontSize: 5 }}/>}
             style={{
               labels: {

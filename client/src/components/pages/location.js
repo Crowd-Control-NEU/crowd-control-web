@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Button from './../buttons/button';
 import socketIOClient from 'socket.io-client';
-import { VictoryAxis, VictoryLine, VictoryChart, VictoryTheme } from 'victory';
+import { VictoryAxis, VictoryLine, VictoryChart, VictoryTheme, VictoryTooltip, VictoryVoronoiContainer } from 'victory';
 import DatePicker from 'react-date-picker';
 
 class Location extends Component {
@@ -220,7 +220,7 @@ updateGraph() {
             <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
             <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
         </center>
-        <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10}>
+        <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10} containerComponent={<VictoryVoronoiContainer/>}>
           <VictoryAxis
             style={{ tickLabels: {fontSize: 3}}}
             tickValues={ this.state.tickValues }
@@ -229,38 +229,12 @@ updateGraph() {
           <VictoryLine
             data={this.state.graphData}
             labels={(datum) => datum.y}
+            labelComponent={<VictoryTooltip style={{ fontSize: 5 }}/>}
             style={{
               labels: {
                 fontSize: 3
               }
             }}
-            events={[{
-              target: "data",
-              eventHandlers: {
-                onMouseOver: () => {
-                  return [
-                    {
-                      target: "data",
-                      mutation: () => ({style: {fill: "gold", width: 30}})
-                    }, {
-                      target: "labels",
-                      mutation: () => ({ active: true })
-                    }
-                  ];
-                },
-                onMouseOut: () => {
-                  return [
-                    {
-                      target: "data",
-                      mutation: () => {}
-                    }, {
-                      target: "labels",
-                      mutation: () => ({ active: false })
-                    }
-                  ];
-                }
-              }
-            }]}
             />
         </VictoryChart>
         <center>

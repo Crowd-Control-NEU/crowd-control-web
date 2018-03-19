@@ -14,9 +14,10 @@ class Location extends Component {
     tickFormat: [],
     name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000',
-    granularity: 'Daily',
+    granularity: 'Hourly Averages',
     startingDate: new Date(),
-    endingDate: new Date()
+    endingDate: new Date(),
+    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   };
 
   componentDidMount() {
@@ -108,7 +109,7 @@ updateGraph() {
     } else if (type === 'DailyAverages') {
       this.setState({
         tickValues: Array.apply(null, {length: 7}).map(Number.call, Number),
-        tickFormat: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        tickFormat: this.state.days,
       });
     }
   }
@@ -138,7 +139,8 @@ updateGraph() {
         if (str === 'avgHourly') {
           buttons.splice(0, 1);
           this.setState({
-            graphData: this.state.hourlyAverages
+            graphData: this.state.hourlyAverages,
+            granularity: 'Hourly Averages'
           });
           this.setAverageTicks('HourlyAverages');
         }
@@ -146,7 +148,8 @@ updateGraph() {
         if (str === 'avgDaily') {
           buttons.splice(1, 1);
           this.setState({
-            graphData: this.state.dailyAverages
+            graphData: this.state.dailyAverages,
+            granularity: 'Daily Averages'
           });
           this.setAverageTicks('DailyAverages')
         }
@@ -196,6 +199,24 @@ updateGraph() {
     this.setState({ endingDate: date })
   }
 
+  getLabel(num) {
+    if (this.state.tickFormat[num] !== '') {
+      return this.state.tickFormat[num] + ': '
+    }
+    if (this.state.granularity === 'Hourly Averages') {
+      var result = '';
+      if (num < 12) {
+        result = num + 'am: ';
+      } else if (num === 24) {
+        result = '12am: ';
+      } else {
+        result = (num - 12) + 'pm: ';
+      }
+      return result;
+    }
+    return '';
+  }
+
   render() {
     const socket = socketIOClient();
 
@@ -210,7 +231,15 @@ updateGraph() {
         <center>
           <h1>{this.state.name}</h1>
           <h1>{this.state.count}</h1>
-          <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
+          {
+            this.state.granularity === 'Hourly Averages' ? (
+              <h3>{this.state.granularity} for {this.state.days[new Date().getDay()]}</h3>
+            ) : this.state.granularity === 'Daily Averages' ? (
+              <h3>{this.state.granularity}</h3>
+            ) : (
+              <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
+            )
+          }
         </center>
         <center style={buttonStyle}>
             <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }}></Button>
@@ -228,7 +257,7 @@ updateGraph() {
           <VictoryAxis dependentAxis/>
           <VictoryLine
             data={this.state.graphData}
-            labels={(datum) => datum.y}
+            labels={(datum) => this.getLabel(datum.x) + datum.y.toFixed(2)}
             labelComponent={<VictoryTooltip style={{ fontSize: 5 }}/>}
             style={{
               labels: {

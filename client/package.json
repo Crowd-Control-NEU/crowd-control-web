@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:5000/",
   "dependencies": {
+    "mapbox-gl": "^0.44.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
     "react-date-picker": "^6.8.1",

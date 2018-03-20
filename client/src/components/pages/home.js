@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Map from './../map/map';
 
 class Home extends Component {
   state = {
@@ -25,6 +26,7 @@ class Home extends Component {
       <div className="container">
         <h1>Crowd Control Home Page</h1>
         <p>{this.state.response}</p>
+        <Map></Map>
       </div>
     );
   }

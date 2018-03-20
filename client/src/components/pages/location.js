@@ -3,6 +3,7 @@ import Button from './../buttons/button';
 import socketIOClient from 'socket.io-client';
 import { VictoryAxis, VictoryLine, VictoryChart, VictoryTheme, VictoryTooltip, VictoryVoronoiContainer } from 'victory';
 import DatePicker from 'react-date-picker';
+import Odometer from 'react-odometerjs';
 
 class Location extends Component {
   state = {
@@ -230,7 +231,7 @@ updateGraph() {
       <div className="container">
         <center>
           <h1>{this.state.name}</h1>
-          <h1>{this.state.count}</h1>
+          <Odometer value={this.state.count} format="(,ddd)"/>
           {
             this.state.granularity === 'Hourly Averages' ? (
               <h3>{this.state.granularity} for {this.state.days[new Date().getDay()]}</h3>

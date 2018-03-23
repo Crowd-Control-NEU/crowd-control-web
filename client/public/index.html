@@ -11,6 +11,9 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 
+    <!-- Google Ubuntu font -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -106,6 +109,76 @@
       }
       .odometer {
         font-size: 100px;
+      }
+    </style>
+
+    <style>
+      body {
+        background-color: #1C222B;
+      }
+      .navbar, .navbar-default, .navbar-inverse {
+        background-color: #0B3C5D;
+      }
+      .navbar-inverse .navbar-brand {
+        color: white;
+      }
+      .navbar-inverse .navbar-brand:hover {
+        color: #D4AA12;
+      }
+      .navbar-inverse .navbar-nav > li > a {
+        color: #F6F6F6;
+      }
+      .navbar-inverse .navbar-nav > li > a:hover,
+      .navbar-inverse .navbar-nav > li > a:focus {
+        color: #D4AA12;
+      }
+      .navbar-inverse .navbar-nav > .active > a,
+      .navbar-inverse .navbar-nav > .active > a:hover,
+      .navbar-inverse .navbar-nav > .active > a:focus {
+        color: white;
+        background-color: #D4AA12;
+      }
+      .navbar-inverse .navbar-toggle:hover,
+      .navbar-inverse .navbar-toggle:focus {
+        background-color: #D4AA12;
+      }
+      .ubuntu {
+        text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+      }
+      .title {
+        color: white;
+      }
+      .desc {
+        font-style: italic;
+        color: #328CC1;
+      }
+      /* Extra small devices (phones, up to 480px) */
+      @media screen and (max-width: 767px) {
+        .title {
+          font-size: 10vw;
+        }
+        .desc {
+          font-size: 5vw;
+        }
+      }
+      /* Small devices (tablets, 768px and up) */
+      @media (min-width: 768px) and (max-width: 991px) {
+        .title {
+          font-size: 80px;
+        }
+      }
+      /* tablets/desktops and up ----------- */
+      @media (min-width: 992px) and (max-width: 1199px) {
+        .title {
+          font-size: 100px;
+        }
+      }
+      /* large desktops and up ----------- */
+      @media screen and (min-width: 1200px) {
+        .title {
+          font-size: 120px;
+        }
       }
     </style>
 

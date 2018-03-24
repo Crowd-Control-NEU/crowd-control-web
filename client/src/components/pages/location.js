@@ -226,33 +226,90 @@ updateGraph() {
     });
 
     var buttonStyle = {"display": "flex", "alignItems": "center", "justifyContent": "center"}
+    var lightBlue = '#328CC1';
+    var darkBlue = '#0B3C5D';
+    var yellow = '#D4AA12';
+    const theme = {
+      axis:
+        {
+          style: {
+            axis: {
+              fill: "transparent",
+              stroke: darkBlue,
+              strokeWidth: 1,
+            },
+            axisLabel: {
+              padding: 25
+            },
+            grid: {
+              fill: "transparent",
+              stroke: darkBlue,
+              pointerEvents: "visible"
+            },
+            ticks: {
+              fill: darkBlue,
+              size: 1,
+              stroke: darkBlue
+            },
+            tickLabels: {
+              fill: lightBlue,
+            }
+          }
+        }
+      ,
+      line:
+        {
+          style: {
+            data: {
+              fill: "transparent",
+              stroke: yellow,
+              strokeWidth: 3
+            },
+          }
+        }
+      ,
+      tooltip: {
+        style: {
+          padding: 5,
+          pointerEvents: "none"
+        },
+        flyoutStyle: {
+          stroke: lightBlue,
+          strokeWidth: 1,
+          fill: "#f0f0f0",
+          pointerEvents: "none"
+        },
+        cornerRadius: 5,
+        pointerLength: 10
+      },
+    };
 
     return (
       <div className="container">
         <center>
-          <h1>{this.state.name}</h1>
+          <h1 className='ubuntu title'>{this.state.name}</h1>
           <Odometer value={this.state.count} format="(,ddd)"/>
           {
             this.state.granularity === 'Hourly Averages' ? (
-              <h3>{this.state.granularity} for {this.state.days[new Date().getDay()]}</h3>
+              <h3 className='lightBlue'>{this.state.granularity} for {this.state.days[new Date().getDay()]}</h3>
             ) : this.state.granularity === 'Daily Averages' ? (
-              <h3>{this.state.granularity}</h3>
+              <h3 className='lightBlue'>{this.state.granularity}</h3>
             ) : (
-              <h3>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
+              <h3 className='lightBlue'>{this.state.granularity} Data from {this.state.startingDate.toLocaleDateString()} to {this.state.endingDate.toLocaleDateString()}</h3>
             )
           }
         </center>
         <center style={buttonStyle}>
-            <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }}></Button>
+            <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }} selected={true}></Button>
             <Button ref="avgDaily" text="Daily Averages" update={ () => {this.buttonManager("avgDaily") }}></Button>
             <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
             <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
             <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
             <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
         </center>
-        <VictoryChart theme={VictoryTheme.material} height={200} domainPadding={10} containerComponent={<VictoryVoronoiContainer/>}>
+        <VictoryChart theme={theme} height={200} domainPadding={10} containerComponent={<VictoryVoronoiContainer/>}>
           <VictoryAxis
-            style={{ tickLabels: {fontSize: 3}}}
+            style={{ tickLabels: {fontSize: 5}}}
             tickValues={ this.state.tickValues }
             tickFormat={ this.state.tickFormat }/>
           <VictoryAxis dependentAxis/>

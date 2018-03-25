@@ -53,23 +53,21 @@ class Map extends React.Component {
         .setPopup(popup)
         .togglePopup()
     }
-  
+
     componentWillUnmount() {
       this.map.remove();
     }
-  
+
     render() {
       const style = {
-        position: 'absolute',
-        top: '20%',
-        left: '30%',
-        bottom: 0,
-        width: '40%',
-        height: '40%'
+        'margin-top': '30px',
+        'padding-left': '15%',
+        width: '70%',
+        height: '500px'
       };
-  
+
       return <div style={style} ref={el => this.mapContainer = el} />;
     }
   }
-  
+
   export default Map;

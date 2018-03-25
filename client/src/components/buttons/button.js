@@ -25,11 +25,11 @@ class Button extends React.Component {
     }
 
     render(){
-        let bgColor = this.state.selected ? "orange" : "grey"
+        let bgColor = this.state.selected ? "#D4AA12" : "#0B3C5D"
 
         return (
              <div>
-                 <button style={{backgroundColor: bgColor}} onClick={this.changeColor.bind(this)}>{this.props.text}</button>
+                 <button style={{backgroundColor: bgColor, color: 'white'}} onClick={this.changeColor.bind(this)}>{this.props.text}</button>
              </div>
         )
     }

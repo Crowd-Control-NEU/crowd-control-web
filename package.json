@@ -28,6 +28,7 @@
     "concurrently": "^3.5.1",
     "express": "^4.16.2",
     "knex": "^0.14.2",
+    "mapbox-gl": "^0.44.1",
     "mocha": "^5.0.0",
     "moment": "^2.20.1",
     "nodemon": "^1.14.11",

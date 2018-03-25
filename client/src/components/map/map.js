@@ -9,7 +9,7 @@ class Map extends React.Component {
       this.map = new mapboxgl.Map({
         container: this.mapContainer,
         style: 'mapbox://styles/joelally18/cjf4i0oaj1c4x2rqutdg8gnei',
-        center: [-71.0892, 42.3398],
+        center: [-71.0892, 42.3390],
         zoom: 15,
       });
 
@@ -40,7 +40,6 @@ class Map extends React.Component {
       marker.src = markerpng
       marker.style.width = '40px';
       marker.style.height = '60px';
-      marker.style.backgroundColor = 'red'
       marker.style.position = 'absolute'; 
       marker.addEventListener('click', function() {
         window.location.href = "/locations/" + locationName;
@@ -66,10 +65,12 @@ class Map extends React.Component {
 
     render() {
       const style = {
-        'margin-top': '30px',
-        'padding-left': '15%',
-        width: '70%',
-        height: '500px'
+        position: 'absolute',
+        top: '45%',
+        left: '30%',
+        bottom: 0,
+        width: '40%',
+        height: '40%'
       };
 
       return <div style={style} ref={el => this.mapContainer = el} />;

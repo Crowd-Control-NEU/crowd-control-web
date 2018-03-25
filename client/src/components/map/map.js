@@ -12,6 +12,14 @@ class Map extends React.Component {
         zoom: 15,
       });
 
+      var locations = [('Marino', [-71.090323, 42.340238])]
+
+      var popup = new mapboxgl.Popup()
+        .setLngLat([-71.090323, 42.340238])
+        .setHTML('<h1>Hello World!</h1>')
+        .addTo(this.map)
+
+
       // marino marker on map
       var marinoMarker = document.createElement('div');
       marinoMarker.className = 'marker';
@@ -21,6 +29,13 @@ class Map extends React.Component {
       marinoMarker.addEventListener('click', function() {
         window.location.href = "/locations/marino"
     });
+      marinoMarker.addEventListener('mouseenter', function() {
+        mar.togglePopup();
+
+      })
+      marinoMarker.addEventListener('mouseleave', function() {
+        mar.togglePopup();
+      })
 
       // snell marker on map
       var snellMarker = document.createElement('div');
@@ -32,14 +47,17 @@ class Map extends React.Component {
         window.location.href = "/locations/snell"
     });
 
-      new mapboxgl.Marker(marinoMarker)
+    var mar =   new mapboxgl.Marker(marinoMarker)
         .setLngLat([-71.090323, 42.340238])
-        .addTo(this.map);
-
+        .addTo(this.map)
+        .setPopup(popup)
+      
       new mapboxgl.Marker(snellMarker)
         .setLngLat([-71.088077, 42.338404])
         .addTo(this.map);
     }
+
+
   
     componentWillUnmount() {
       this.map.remove();

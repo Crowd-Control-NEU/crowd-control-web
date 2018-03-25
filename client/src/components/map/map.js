@@ -1,5 +1,6 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
+import markerpng from './marker.png'
 
 class Map extends React.Component {
 
@@ -12,52 +13,46 @@ class Map extends React.Component {
         zoom: 15,
       });
 
-      var locations = [('Marino', [-71.090323, 42.340238])]
+      var locations = [['Marino', [-71.090323, 42.340238]], ['Snell', [-71.088077, 42.338404]]]
 
-      var popup = new mapboxgl.Popup()
-        .setLngLat([-71.090323, 42.340238])
-        .setHTML('<h1>Hello World!</h1>')
-        .addTo(this.map)
-
-
-      // marino marker on map
-      var marinoMarker = document.createElement('div');
-      marinoMarker.className = 'marker';
-      marinoMarker.textContent = "MARINO"
-      marinoMarker.style.fontWeight = 'bold'
-      marinoMarker.style.backgroundColor = "red"
-      marinoMarker.addEventListener('click', function() {
-        window.location.href = "/locations/marino"
-    });
-      marinoMarker.addEventListener('mouseenter', function() {
-        mar.togglePopup();
-
-      })
-      marinoMarker.addEventListener('mouseleave', function() {
-        mar.togglePopup();
-      })
-
-      // snell marker on map
-      var snellMarker = document.createElement('div');
-      snellMarker.className = 'marker';
-      snellMarker.textContent = "SNELL LIBRARY"
-      snellMarker.style.fontWeight = 'bold'
-      snellMarker.style.backgroundColor = "red"
-      snellMarker.addEventListener('click', function() {
-        window.location.href = "/locations/snell"
-    });
-
-    var mar =   new mapboxgl.Marker(marinoMarker)
-        .setLngLat([-71.090323, 42.340238])
-        .addTo(this.map)
-        .setPopup(popup)
-      
-      new mapboxgl.Marker(snellMarker)
-        .setLngLat([-71.088077, 42.338404])
-        .addTo(this.map);
+      for (var i = 0; i < locations.length; i++) {
+        this.addLocationToMap(locations[i]);
+      }
     }
 
+    addLocationToMap(loc) {
+      var locationName = loc[0];
+      var locationLatLon = loc[1];
 
+      // create popup
+      var popup = new mapboxgl.Popup()
+      .setLngLat(locationLatLon)
+      .setHTML('<h5>' + String(locationName) + '</h5>')
+      .addTo(this.map) 
+
+      // add marker
+      var marker = document.createElement('img');
+      marker.className = 'marker';
+      marker.src = markerpng
+      marker.style.width = '40px';
+      marker.style.height = '60px';
+      marker.addEventListener('click', function() {
+        window.location.href = "/locations/" + locationName;
+    });
+      marker.addEventListener('mouseenter', function() {
+        mar.togglePopup();
+
+      })
+      marker.addEventListener('mouseleave', function() {
+        mar.togglePopup();
+      })
+
+      var mar =   new mapboxgl.Marker(marker)
+        .setLngLat(locationLatLon)
+        .addTo(this.map)
+        .setPopup(popup)
+        .togglePopup()
+    }
   
     componentWillUnmount() {
       this.map.remove();

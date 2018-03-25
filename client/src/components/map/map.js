@@ -11,6 +11,7 @@ class Map extends React.Component {
         style: 'mapbox://styles/joelally18/cjf4i0oaj1c4x2rqutdg8gnei',
         center: [-71.0892, 42.3390],
         zoom: 15,
+        pitch: 50
       });
 
       var locations = [ ['Marino', [-71.090323, 42.340238]], 

@@ -8,12 +8,16 @@ class Map extends React.Component {
       mapboxgl.accessToken = 'pk.eyJ1Ijoiam9lbGFsbHkxOCIsImEiOiJjamV6c29vZncwZnE2MnFvYXlhMzZ1d3k3In0.s1QC3xcFA-jG2MZX_wIPkA';
       this.map = new mapboxgl.Map({
         container: this.mapContainer,
-        style: 'mapbox://styles/mapbox/streets-v10',
+        style: 'mapbox://styles/joelally18/cjf4i0oaj1c4x2rqutdg8gnei',
         center: [-71.0892, 42.3398],
         zoom: 15,
       });
 
-      var locations = [['Marino', [-71.090323, 42.340238]], ['Snell', [-71.088077, 42.338404]]]
+      var locations = [ ['Marino', [-71.090323, 42.340238]], 
+                        ['Snell', [-71.088077, 42.338404]],
+                        ['Wollastons', [-71.092182, 42.337369]],
+                        ['Rebeccas', [-71.088799, 42.338919]]
+    ]
 
       for (var i = 0; i < locations.length; i++) {
         this.addLocationToMap(locations[i]);
@@ -36,6 +40,8 @@ class Map extends React.Component {
       marker.src = markerpng
       marker.style.width = '40px';
       marker.style.height = '60px';
+      marker.style.backgroundColor = 'red'
+      marker.style.position = 'absolute'; 
       marker.addEventListener('click', function() {
         window.location.href = "/locations/" + locationName;
     });

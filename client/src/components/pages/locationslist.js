@@ -33,12 +33,13 @@ class LocationsList extends Component {
         return location.location_name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
       }
     )
-    const listItems = filteredLocations.map((d) => <li><Link to={'locations/' + d.location_name} > {d.location_name} </Link></li>);
+    const listItems = filteredLocations.map((d) => <Link to={'locations/' + d.location_name} ><li
+        class="list-group-item ubuntu"> {d.location_name} </li></Link>);
 
     return (
       <div className="container">
-        <h1>Locations List</h1>
-        <input type="text" value={this.state.search} onChange={this.updateSearch.bind(this)}/>
+        <h1 className='ubuntu title'>Locations</h1>
+        <input type="text" class="form-control" placeholder="Search" value={this.state.search} onChange={this.updateSearch.bind(this)}/>
         <br></br>
         {listItems}
       </div>

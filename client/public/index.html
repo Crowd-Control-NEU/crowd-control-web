@@ -11,8 +11,194 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 
+    <!-- Google Ubuntu font -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+
+    <!-- Odometer CSS -->
+    <style>
+      .odometer.odometer-auto-theme, .odometer.odometer-theme-default {
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        *zoom: 1;
+        *display: inline;
+        position: relative;
+      }
+      .odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-default .odometer-digit {
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        *zoom: 1;
+        *display: inline;
+        position: relative;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-default .odometer-digit .odometer-digit-spacer {
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        *zoom: 1;
+        *display: inline;
+        visibility: hidden;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner, .odometer.odometer-theme-default .odometer-digit .odometer-digit-inner {
+        text-align: left;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-ribbon, .odometer.odometer-theme-default .odometer-digit .odometer-ribbon {
+        display: block;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-ribbon-inner, .odometer.odometer-theme-default .odometer-digit .odometer-ribbon-inner {
+        display: block;
+        -webkit-backface-visibility: hidden;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-value, .odometer.odometer-theme-default .odometer-digit .odometer-value {
+        display: block;
+        -webkit-transform: translateZ(0);
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-value.odometer-last-value, .odometer.odometer-theme-default .odometer-digit .odometer-value.odometer-last-value {
+        position: absolute;
+      }
+      .odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-up .odometer-ribbon-inner {
+        -webkit-transition: -webkit-transform 2s;
+        -moz-transition: -moz-transform 2s;
+        -ms-transition: -ms-transform 2s;
+        -o-transition: -o-transform 2s;
+        transition: transform 2s;
+      }
+      .odometer.odometer-auto-theme.odometer-animating-up.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-up.odometer-animating .odometer-ribbon-inner {
+        -webkit-transform: translateY(-100%);
+        -moz-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+        -o-transform: translateY(-100%);
+        transform: translateY(-100%);
+      }
+      .odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-down .odometer-ribbon-inner {
+        -webkit-transform: translateY(-100%);
+        -moz-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+        -o-transform: translateY(-100%);
+        transform: translateY(-100%);
+      }
+      .odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+        -webkit-transition: -webkit-transform 2s;
+        -moz-transition: -moz-transform 2s;
+        -ms-transition: -ms-transform 2s;
+        -o-transition: -o-transform 2s;
+        transition: transform 2s;
+        -webkit-transform: translateY(0);
+        -moz-transform: translateY(0);
+        -ms-transform: translateY(0);
+        -o-transform: translateY(0);
+        transform: translateY(0);
+      }
+      .odometer.odometer-auto-theme, .odometer.odometer-theme-default {
+        font-family: "Helvetica Neue", sans-serif;
+        line-height: 1.1em;
+      }
+      .odometer.odometer-auto-theme .odometer-value, .odometer.odometer-theme-default .odometer-value {
+        text-align: center;
+      }
+      .odometer {
+        font-size: 100px;
+        color: #D4AA12;
+      }
+    </style>
+
+    <style>
+      body {
+        background-color: #1C222B;
+      }
+      .navbar, .navbar-default, .navbar-inverse {
+        background-color: #0B3C5D;
+      }
+      .navbar-inverse .navbar-brand {
+        color: white;
+      }
+      .navbar-inverse .navbar-brand:hover {
+        color: #D4AA12;
+      }
+      .navbar-inverse .navbar-nav > li > a {
+        color: #F6F6F6;
+      }
+      .navbar-inverse .navbar-nav > li > a:hover,
+      .navbar-inverse .navbar-nav > li > a:focus {
+        color: #D4AA12;
+      }
+      .navbar-inverse .navbar-nav > .active > a,
+      .navbar-inverse .navbar-nav > .active > a:hover,
+      .navbar-inverse .navbar-nav > .active > a:focus {
+        color: white;
+        background-color: #D4AA12;
+      }
+      .navbar-inverse .navbar-toggle:hover,
+      .navbar-inverse .navbar-toggle:focus {
+        background-color: #D4AA12;
+      }
+      .ubuntu {
+        text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+      }
+      .title {
+        color: white;
+      }
+      .desc {
+        font-style: italic;
+        color: #D4AA12;
+      }
+      .info {
+        color: #328CC1;
+        font-size: 18px;
+      }
+      .lightBlue {
+        color: #328CC1;
+      }
+      .list-group-item {
+        background-color: #0B3C5D;
+        color: white;
+        font-size: 18px;
+      }
+      .list-group-item:hover {
+        color: #D4AA12;
+      }
+      /* Extra small devices (phones, up to 480px) */
+      @media screen and (max-width: 767px) {
+        .title {
+          font-size: 10vw;
+        }
+        .desc {
+          font-size: 5vw;
+        }
+      }
+      /* Small devices (tablets, 768px and up) */
+      @media (min-width: 768px) and (max-width: 991px) {
+        .title {
+          font-size: 80px;
+        }
+      }
+      /* tablets/desktops and up ----------- */
+      @media (min-width: 992px) and (max-width: 1199px) {
+        .title {
+          font-size: 100px;
+        }
+      }
+      /* large desktops and up ----------- */
+      @media screen and (min-width: 1200px) {
+        .title {
+          font-size: 120px;
+        }
+      }
+    </style>
 
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 var db = require('./models/db');
+var parser = require('./models/parser');
 var socketio = require('socket.io')
 
 var bodyParser = require("body-parser");
@@ -56,8 +57,18 @@ app.get('/api/test', (req, res) => {
 app.get('/count/:location', async (req, res) => {
     var count = await db.getCountAtLocation(req.params.location).then();
     var historical = await db.getHistoricalForLocation(req.params.location).then();
-    count[0]['historical'] = historical;
+    count[0]['hourlyAverages'] = parser.getHourlyAverages(historical);
+    count[0]['dailyAverages'] = parser.getDailyAverages(historical);;
     res.send(count);
+});
+
+// get the graph data  (EXAMPLE: /data/{"location":"Wollastons", "type":"daily", "startDate":"2015-01-01", "endDate":"2015-02-01"})
+app.get('/data/:graph', async (req, res) => {
+    var graphRequest = JSON.parse(req.params.graph)
+    if(typeof graphRequest.location !== 'undefined' && typeof graphRequest.type !== 'undefined' && typeof graphRequest.startDate !== 'undefined' && typeof graphRequest.endDate !== 'undefined') {
+        var historical = await db.getHistoricalGraphData(graphRequest.location, graphRequest.type, graphRequest.startDate, graphRequest.endDate);
+        res.send(historical);
+       }
 });
 
 // get the list of locations
@@ -72,7 +83,7 @@ app.post('/data-add', async (req, res) => {
     var location_name = req.body.location_name;
     var count = req.body.count;
     var date = req.body.date;
-    
+
     var locations = await db.getLocations();
     var location_is_registered = false;
     for(var i = 0; i < locations.length; i++) {
@@ -95,4 +106,5 @@ app.post('/data-add', async (req, res) => {
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/../client/build/index.html'));
   });
-  
+
+module.exports = app;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Button from './../buttons/button';
 import socketIOClient from 'socket.io-client';
-import { VictoryAxis, VictoryLine, VictoryChart, VictoryTheme, VictoryTooltip, VictoryVoronoiContainer } from 'victory';
+import { VictoryAxis, VictoryLine, VictoryChart, VictoryTooltip, VictoryVoronoiContainer } from 'victory';
 import DatePicker from 'react-date-picker';
 import Odometer from 'react-odometerjs';
 

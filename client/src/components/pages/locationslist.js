@@ -34,7 +34,7 @@ class LocationsList extends Component {
       }
     )
     const listItems = filteredLocations.map((d) => <Link to={'locations/' + d.location_name} ><li
-        class="list-group-item"> {d.location_name} </li></Link>);
+        class="list-group-item ubuntu"> {d.location_name} </li></Link>);
 
     return (
       <div className="container">

@@ -299,15 +299,7 @@ updateGraph() {
             )
           }
         </center>
-        <center style={buttonStyle}>
-            <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }} selected={true}></Button>
-            <Button ref="avgDaily" text="Daily Averages" update={ () => {this.buttonManager("avgDaily") }}></Button>
-            <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
-            <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
-            <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
-            <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
-        </center>
-        <VictoryChart theme={theme} height={200} domainPadding={10} containerComponent={<VictoryVoronoiContainer/>}>
+        <VictoryChart theme={theme} height={200} domainPadding={10} padding={{top: 10, left: 50, right: 50, bottom: 20}} containerComponent={<VictoryVoronoiContainer/>}>
           <VictoryAxis
             style={{ tickLabels: {fontSize: 5}}}
             tickValues={ this.state.tickValues }
@@ -324,10 +316,20 @@ updateGraph() {
             }}
             />
         </VictoryChart>
-        <center>
-          <DatePicker onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>
-          <DatePicker onChange={(date) => this.onEndingDateChange(date)} value={this.state.endingDate}/>
+        <center style={buttonStyle}>
+            <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }}></Button>
+            <Button ref="avgDaily" text="Daily Averages" update={ () => {this.buttonManager("avgDaily") }}></Button>
+            <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
+            <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
+            <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
+            <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
         </center>
+        <span><br/></span>
+        <center>
+          <DatePicker className='datepicker' onChange={(date) => this.onStartingDateChange(date)} value={this.state.startingDate}/>
+          <DatePicker className='datepicker' onChange={(date) => this.onEndingDateChange(date)} value={this.state.endingDate}/>
+        </center>
+        <span><br/></span>
       </div>
     );
   }

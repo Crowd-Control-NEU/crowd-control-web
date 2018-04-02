@@ -83,6 +83,9 @@ app.post('/data-add', async (req, res) => {
     var location_name = req.body.location_name;
     var count = req.body.count;
     var date = req.body.date;
+    console.log("date: " + date)
+    js_date = Date.parse(date)
+    console.log(js_date)
 
     var locations = await db.getLocations();
     var location_is_registered = false;

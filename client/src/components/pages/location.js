@@ -16,7 +16,7 @@ class Location extends Component {
     name: this.capitalize(this.props.match.params.name),
     endpoint: 'http://localhost:5000',
     granularity: 'Hourly Averages',
-    startingDate: new Date(),
+    startingDate: this.getStartingDate(),
     endingDate: new Date(),
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   };
@@ -216,6 +216,12 @@ updateGraph() {
       return result;
     }
     return '';
+  }
+
+  getStartingDate() {
+    var date = new Date();
+    date.setMonth(date.getMonth() - 2);
+    return date;
   }
 
   render() {

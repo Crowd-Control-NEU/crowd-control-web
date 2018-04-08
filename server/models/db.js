@@ -99,6 +99,7 @@ function getHistoricalGraphDataDaily2(location, startDate, endDate) {
         client.connect() 
         var queryWeek = 'SELECT date_trunc($1, date) AS "Day" , sum(count) AS "visitors" FROM historical_data WHERE location_name = $2 and date > $3 and date < $4 and count > 0 GROUP BY 1 ORDER BY 1;'
         const res = await client.query(queryWeek, ['day', location, startDate, endDate])
+        console.log(res)
         console.log(res.rows)
         resolve(res.rows)
         await client.end()

@@ -6,7 +6,9 @@ import random
 
 API_ENDPOINT_LOCAL = 'http://localhost:5000/data-add'
 API_ENDPOINT_PRODUCTION = 'https://infinite-peak-11670.herokuapp.com/data-add'
-location = 'Subway'
+
+API_TO_USE = API_ENDPOINT_PRODUCTION
+location = 'Rebeccas'
 
 days = 60
 date_to_send = ''
@@ -26,19 +28,31 @@ for x in range(0,days):
         elif hour >= 7 and hour < 8: 
             randomCount = random.randint(0 , 5)
             count_for_day += randomCount
-        elif hour >= 8 and hour < 19:
-            if count_for_day < 15:
+        elif hour >= 8 and hour < 11:
+            if count_for_day < 30:
                 randomCount = random.randint(0 , 7)
             else:
                 randomCount = random.randint(-7 , 7)
             count_for_day += randomCount 
-        elif hour >= 19 and hour < 21:
+        elif hour >= 11 and hour < 14:
+            if count_for_day < 75:
+                randomCount = random.randint(0 , 7)
+            else:
+                randomCount = random.randint(-7 , 7)
+            count_for_day += randomCount
+        elif hour >= 14 and hour < 15:
             if count_for_day == 1:
                 randomCount = -1
             else:
                 randomCount = int(-1 * count_for_day/10)
             count_for_day += randomCount 
-        elif hour >= 21 and hour < 24:
+        elif hour >= 15 and hour < 16:
+            if count_for_day == 1:
+                randomCount = -1
+            else:
+                randomCount = int(-1 * count_for_day/2)
+            count_for_day += randomCount 
+        elif hour >= 16 and hour < 24:
             if count_for_day == 1:
                 randomCount = -1
             else:
@@ -47,7 +61,7 @@ for x in range(0,days):
 
  #       print('Hour: %s    randomCount: %s,   count_for_day: %s' % (hour, randomCount, count_for_day))
         data = parse.urlencode({'count': randomCount, 'location_name': location, 'date': date_to_send}).encode()
-        req =  request.Request(API_ENDPOINT_LOCAL, data=data) # this will make the method "POST"
+        req =  request.Request(API_TO_USE, data=data) # this will make the method "POST"
         resp = request.urlopen(req)
         # Convert bytes to string type and string type to dict
         string = resp.read().decode('utf-8')

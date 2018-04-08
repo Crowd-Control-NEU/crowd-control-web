@@ -14,7 +14,7 @@ class Map extends React.Component {
         pitch: 50
       });
 
-      var locations = [ ['Marino', [-71.090323, 42.340238]], 
+      var locations = [ ['Marino', [-71.090323, 42.340238]],
                         ['Snell', [-71.088077, 42.338404]],
                         ['Wollastons', [-71.092182, 42.337369]],
                         ['Rebeccas', [-71.088799, 42.338919]]
@@ -33,7 +33,7 @@ class Map extends React.Component {
       var popup = new mapboxgl.Popup()
       .setLngLat(locationLatLon)
       .setHTML('<h5>' + String(locationName) + '</h5>')
-      .addTo(this.map) 
+      .addTo(this.map)
 
       // add marker
       var marker = document.createElement('img');
@@ -41,7 +41,7 @@ class Map extends React.Component {
       marker.src = markerpng
       marker.style.width = '40px';
       marker.style.height = '60px';
-      marker.style.position = 'absolute'; 
+      marker.style.position = 'absolute';
       marker.addEventListener('click', function() {
         window.location.href = "/locations/" + locationName;
     });
@@ -66,12 +66,10 @@ class Map extends React.Component {
 
     render() {
       const style = {
-        position: 'absolute',
-        top: '45%',
-        left: '30%',
-        bottom: 0,
-        width: '40%',
-        height: '40%'
+        top: '10px',
+        left: '10%',
+        width: '80%',
+        height: '50vh'
       };
 
       return <div style={style} ref={el => this.mapContainer = el} />;

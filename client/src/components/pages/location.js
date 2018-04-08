@@ -328,7 +328,6 @@ updateGraph() {
             <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
             <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
             <Button ref="monthly" text="Monthly" update={ () => {this.buttonManager("monthly") }}></Button>
-            <Button ref="yearly" text="Yearly" update={ () => {this.buttonManager("yearly") }}></Button>
         </center>
         <span><br/></span>
         <center>

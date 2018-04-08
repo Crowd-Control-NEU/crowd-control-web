@@ -64,9 +64,6 @@ updateGraph() {
     else if (this.state.granularity === "Monthly") {
       accessor = "Month";
     }
-    else if (this.state.granularity === "Yearly") {
-      accessor = "Year";
-    }
     else {
       accessor = "Day";
     }
@@ -135,7 +132,7 @@ updateGraph() {
   };
 
   buttonManager(str){
-        var buttons = ['avgHourly', 'avgDaily', 'daily', 'weekly', 'monthly', 'yearly'];
+        var buttons = ['avgHourly', 'avgDaily', 'daily', 'weekly', 'monthly'];
 
         if (str === 'avgHourly') {
           buttons.splice(0, 1);
@@ -175,14 +172,6 @@ updateGraph() {
           buttons.splice(4, 1);
           this.setState({granularity: "Monthly"}, () => {
             console.log("Monthly hit")
-            this.updateGraph(str)
-          });
-        }
-
-        if (str === "yearly") {
-          buttons.splice(5, 1);
-          this.setState({granularity: "Yearly"}, () => {
-            console.log("Yearly hit")
             this.updateGraph(str)
           });
         }

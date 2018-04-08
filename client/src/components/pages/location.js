@@ -45,7 +45,7 @@ updateGraph() {
   callGraphApi = async () => {
     const graphJSON = {"location": this.state.name, "type": this.state.granularity.toLowerCase(), "startDate": this.state.startingDate, "endDate": this.state.endingDate};
     var jsonString = JSON.stringify(graphJSON)
-
+    console.log(jsonString)
     const response = await fetch('/data/' + jsonString);
     const body = await response.json();
     console.log(body)

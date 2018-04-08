@@ -7,8 +7,8 @@ import random
 API_ENDPOINT_LOCAL = 'http://localhost:5000/data-add'
 API_ENDPOINT_PRODUCTION = 'https://infinite-peak-11670.herokuapp.com/data-add'
 
-API_TO_USE = API_ENDPOINT_PRODUCTION
-location = 'Rebeccas'
+API_TO_USE = API_ENDPOINT_LOCAL
+location = 'Subway'
 
 days = 60
 date_to_send = ''
@@ -68,3 +68,5 @@ for x in range(0,days):
         print(string)
         t.sleep(.0001)
     print('DAY:', x)    
+
+

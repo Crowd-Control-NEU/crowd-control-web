@@ -283,6 +283,7 @@ updateGraph() {
       <div className="container">
         <center>
           <h1 className='ubuntu title'>{this.state.name}</h1>
+          <p className='ubuntu live'>Current Occupancy:</p>
           <Odometer value={this.state.count} format="(,ddd)"/>
           {
             this.state.granularity === 'Hourly Averages' ? (

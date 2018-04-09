@@ -17,8 +17,13 @@ class Map extends React.Component {
       var locations = [ ['Marino', [-71.090323, 42.340238]],
                         ['Snell', [-71.088077, 42.338404]],
                         ['Wollastons', [-71.092182, 42.337369]],
-                        ['Rebeccas', [-71.088799, 42.338919]]
-    ]
+                        ['Rebeccas', [-71.088799, 42.338919]],
+                        ['Matthews Arena', [-71.084523, 42.341235]],
+                        ['Snell Engineering', [-71.088899, 42.338352]],
+                        ['Curry Student Ballroom', [-71.087477, 42.339261]],
+                        ['West Village H Lab', [-71.092277, 42.338608]],
+                        ['Cappys', [-71.089654, 42.343739]]
+                      ]
 
       for (var i = 0; i < locations.length; i++) {
         this.addLocationToMap(locations[i]);

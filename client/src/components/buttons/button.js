@@ -29,7 +29,7 @@ class Button extends React.Component {
 
         return (
              <div>
-                 <button style={{backgroundColor: bgColor, color: 'white'}} onClick={this.changeColor.bind(this)}>{this.props.text}</button>
+                 <button style={{backgroundColor: bgColor, color: 'white'}} onClick={this.changeColor.bind(this)} className='button'>{this.props.text}</button>
              </div>
         )
     }

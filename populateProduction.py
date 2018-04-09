@@ -7,8 +7,8 @@ import random
 API_ENDPOINT_LOCAL = 'http://localhost:5000/data-add'
 API_ENDPOINT_PRODUCTION = 'https://infinite-peak-11670.herokuapp.com/data-add'
 
-API_TO_USE = API_ENDPOINT_LOCAL
-location = 'Subway'
+API_TO_USE = API_ENDPOINT_PRODUCTION
+location = 'Matthews Arena'
 
 days = 60
 date_to_send = ''
@@ -23,36 +23,33 @@ for x in range(0,days):
 
         randomCount = 0
         hour = date_to_send.hour
-        if hour >= 0 and hour < 7:
-            randomCount = 0
-        elif hour >= 7 and hour < 8: 
+        if hour >= 0 and hour < 5:
+            if count_for_day > 30:
+                randomCount = random.randint(-5 , 3)
+            else:
+                randomCount = random.randint(0, 5)
+        elif hour >= 5 and hour < 8: 
             randomCount = random.randint(0 , 5)
             count_for_day += randomCount
-        elif hour >= 8 and hour < 11:
-            if count_for_day < 30:
-                randomCount = random.randint(0 , 7)
+        elif hour >= 11 and hour < 13:
+            if count_for_day < 100:
+                randomCount = random.randint(0 , 5)
             else:
-                randomCount = random.randint(-7 , 7)
+                randomCount = random.randint(-10 , 5)
             count_for_day += randomCount 
-        elif hour >= 11 and hour < 14:
-            if count_for_day < 75:
-                randomCount = random.randint(0 , 7)
+        elif hour >= 12 and hour < 20:
+            if count_for_day < 150:
+                randomCount = random.randint(0 , 10)
             else:
-                randomCount = random.randint(-7 , 7)
-            count_for_day += randomCount
-        elif hour >= 14 and hour < 15:
+                randomCount = int(-1 * count_for_day/3)
+            count_for_day += randomCount 
+        elif hour >= 20 and hour < 22:
             if count_for_day == 1:
                 randomCount = -1
             else:
-                randomCount = int(-1 * count_for_day/10)
+                randomCount = int(-1 * count_for_day/5)
             count_for_day += randomCount 
-        elif hour >= 15 and hour < 16:
-            if count_for_day == 1:
-                randomCount = -1
-            else:
-                randomCount = int(-1 * count_for_day/2)
-            count_for_day += randomCount 
-        elif hour >= 16 and hour < 24:
+        elif hour >= 22 and hour < 24:
             if count_for_day == 1:
                 randomCount = -1
             else:

@@ -15,7 +15,7 @@ class Map extends React.Component {
       });
 
       var locations = [ ['Marino', [-71.090323, 42.340238]],
-                        ['Snell', [-71.088077, 42.338404]],
+                        ['Snell Library', [-71.088077, 42.338404]],
                         ['Wollastons', [-71.092182, 42.337369]],
                         ['Rebeccas', [-71.088799, 42.338919]],
                         ['Matthews Arena', [-71.084523, 42.341235]],

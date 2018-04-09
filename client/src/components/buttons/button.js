@@ -1,12 +1,12 @@
 import React from 'react';
 
 class Button extends React.Component {
-    constructor(){
-         super();
+    constructor(props){
+         super(props);
 
          this.state = {
               buttonText: "Button",
-              selected: false
+              selected: props.active
          }
     }
 

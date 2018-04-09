@@ -312,7 +312,7 @@ updateGraph() {
             />
         </VictoryChart>
         <center style={buttonStyle}>
-            <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }}></Button>
+            <Button ref="avgHourly" text="Hourly Averages" update={ () => {this.buttonManager("avgHourly") }} active={true}></Button>
             <Button ref="avgDaily" text="Daily Averages" update={ () => {this.buttonManager("avgDaily") }}></Button>
             <Button ref="daily" text="Daily" update={ () => {this.buttonManager("daily") }}></Button>
             <Button ref="weekly" text="Weekly" update={ () => {this.buttonManager("weekly") }}></Button>
